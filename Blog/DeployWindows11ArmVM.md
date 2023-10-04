@@ -16,7 +16,7 @@
 <details open>
   <summary><u>Variables</u></summary>
 
-<pre id="code"></pre>
+<pre id="code1"></pre>
 
 </details>
 
