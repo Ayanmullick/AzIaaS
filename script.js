@@ -49,5 +49,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     return matches;
   }
+  function showBlocks() {
+        var blocks = findBlocks(data);
+    blocks.forEach(function (item, index) {
+      let variableNameBlock = document.getElementById(
+        `variableName${index + 1}`
+      );
+
+      let codeBlock = document.getElementById("code" + (index + 1));
+      if (codeBlock !== null) {
+        codeBlock.textContent = item.content;
+        hljs.highlightElement(codeBlock);
+      }
+  
+    });
+  }
+
   
 });
