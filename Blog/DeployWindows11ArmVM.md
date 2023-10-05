@@ -16,8 +16,7 @@
       });
     }
     matches.forEach(function (item, index) {
-      let variableNameBlock = document.getElementById(`summary${index + 1} u`);
-
+      let variableNameBlock = document.getElementById(`variable{index + 1}`);
       let codeBlock = document.getElementById("code" + (index + 1));
       codeBlock.textContent = item.content;
       variableNameBlock.textContent = item.variableName;
@@ -40,7 +39,7 @@ This stores the name in a variable, creates a resource group and parameterizes t
 <img align="right" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki4cvu8jf2i1r0v9f7l.png" width="30%"  border="3"/>
 
 <details open>
-  <summary><u>Variables</u></summary>
+  <summary><u id="variable1"></u></summary>
 
 <pre class="powershell" id="code1"></pre>
 
