@@ -3,11 +3,10 @@
   let fetchRes = fetch("https://raw.githubusercontent.com/Ayanmullick/AzIaaS/master/AzVM.ps1")
 
   fetchRes.then(response => response.clone().text()).then(data => {const lines = data.split("\n");
-      const regexPattern =
+    const regexPattern =
       /#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
     const matches = [];
     while ((match = regexPattern.exec(data)) !== null) {
-      console.log(match.groups);
       const variableName = match.groups.variableName.trim();
       const content = match.groups.content.trim();
 
@@ -17,8 +16,11 @@
       });
     }
     matches.forEach(function (item, index) {
+      let variableNameBlock = document.getElementById(`summary${index + 1} u`);
+
       let codeBlock = document.getElementById("code" + (index + 1));
       codeBlock.textContent = item.content;
+      variableNameBlock.textContent = item.variableName;
     });
    /* hljs.highlightElement(document.getElementById("code1"));
     hljs.highlightElement(document.getElementById("code2"));
