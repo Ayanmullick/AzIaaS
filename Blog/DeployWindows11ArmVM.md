@@ -1,6 +1,6 @@
 # Azure PowerShell to deploy Win11 Arm VM
 <script>
-  var allowedVariales = ["Variables", "Network configuration", "Virtual Machine Configuration","Deploys",];
+  var allowedVariales = ["Variables", "NetworkConfiguration", "VirtualMachineConfiguration","Deploys"];
   var fetchRes = fetch("https://raw.githubusercontent.com/amirkacem/AzIaaS/master/AzVM.ps1")
   fetchRes.then(response => response.clone().text()).then(data => {
     showBlocks(data,allowedVariales);
@@ -22,19 +22,19 @@ I wanted to explore the benefits of [Azure ARM VMs that run on Arm-based process
 This stores the name in a variable, creates a resource group and parameterizes the location and Resource Group name for [splatting][3].
 
 <details open>
-<summary><u id="variableName1">Varaiables</u></summary>
+<summary><u id="Variables"></u></summary>
 <pre class="powershell" id="code1"></pre>
 </details>
 
 This is the network configuration to create an NSG allowing remote desktop connections and a public IP address pointing to the [accelerated networking][4] enabled network card that the virtual machine would use. Add the IP where the RDP connection would come from.
 <details open>
-<summary><u id="variableName2">Network Configuration</u></summary>
+<summary><u id="NetworkConfiguration"></u></summary>
 <pre id="code2" class="powershell clear"></pre>
 </details>
 
 The virtual machine configuration specifies the name, [size][5], credentials, time zone, [image details][10], [update behavior][6] and [diagnostics configuration][7] of the VM. Add your password.
 <details open>
-<summary><u id="variableName3">Virtual Machine Configuration</u></summary>
+<summary><u id="VirtualMachineConfiguration"></u></summary>
 <pre id="code3" class="powershell"></pre>
 </details>
 
