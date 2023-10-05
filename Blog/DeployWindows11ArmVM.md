@@ -51,7 +51,7 @@ This stores the name in a variable, creates a resource group and parameterizes t
 </details>
 
 This is the network configuration to create an NSG allowing remote desktop connections and a public IP address pointing to the [accelerated networking][4] enabled network card that the virtual machine would use. Add the IP where the RDP connection would come from.
-<details
+<details>
 <summary><u id="variableName2"></u></summary>
 <pre id="code2" class="powershell clear"></pre>
 </details>
