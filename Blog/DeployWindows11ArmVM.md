@@ -1,6 +1,13 @@
 # Azure PowerShell to deploy Win11 Arm VM
 <script>
-  let fetchRes = fetch("https://raw.githubusercontent.com/amirkacem/AzIaaS/master/AzVM.ps1")
+    var fileName ='AzVM.ps1';
+    var allowedVariales = [
+      "Variables",
+      "Network configuration",
+      "Virtual Machine Configuration",
+      "Deploys",
+    ];
+  var fetchRes = fetch("https://raw.githubusercontent.com/amirkacem/AzIaaS/master/"+fileName)
   fetchRes.then(response => response.clone().text()).then(data => {
     showBlocks();
   })
