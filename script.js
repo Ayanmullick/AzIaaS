@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     return matches;
   }
-  function showBlocks() {
+  function showBlocks(data) {
         var blocks = findBlocks(data);
     blocks.forEach(function (item, index) {
       let variableNameBlock = document.getElementById(
