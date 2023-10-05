@@ -1,9 +1,7 @@
 # Azure PowerShell to deploy Win11 Arm VM
 <script>
-  let fetchRes = fetch("https://raw.githubusercontent.com/amirkacem/AzIaaS/master/AzVM.ps1")
-  fetchRes.then(response => response.clone().text()).then(data => {
-    const regexPattern =
-      /#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
+  let findBlocks = function () {
+      const regexPattern =/#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
     const matches = [];
     while ((match = regexPattern.exec(data)) !== null) {
       const variableName = match.groups.variableName.trim();
@@ -14,16 +12,20 @@
         content,
       });
     }
-    matches.forEach(function (item, index) {
+    return matches;
+  }
+  let fetchRes = fetch("https://raw.githubusercontent.com/amirkacem/AzIaaS/master/AzVM.ps1")
+  fetchRes.then(response => response.clone().text()).then(data => {
+    let blocks = findBlocks();
+    blocks.forEach(function (item, index) {
       let variableNameBlock = document.getElementById(
         `variableName${index + 1}`
       );
 
       let codeBlock = document.getElementById("code" + (index + 1));
-      console.log(codeBlock);
       if (codeBlock !== null) {
         codeBlock.textContent = item.content;
-         hljs.highlightElement(codeBlock);
+        hljs.highlightElement(codeBlock);
       }
       if (variableNameBlock !== null) {
         variableNameBlock.textContent = item.variableName;
