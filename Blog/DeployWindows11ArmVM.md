@@ -27,7 +27,7 @@
       if (variableNameBlock !== null) {
         variableNameBlock.textContent = item.variableName;
       }
-   });
+    });
    /* hljs.highlightElement(document.getElementById("code1"));
     hljs.highlightElement(document.getElementById("code2"));
     hljs.highlightElement(document.getElementById("code3"));*/
