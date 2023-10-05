@@ -19,8 +19,8 @@ This stores the name in a variable, creates a resource group and parameterizes t
 <a href="https://shell.azure.com/powershell" target="_blank">
    <img align="right" src="https://learn.microsoft.com/azure/cloud-shell/media/embed-cloud-shell/launch-cloud-shell-1.png" alt="Launch Cloud Shell">
 </a>
-
-
+<br/>
+<br/>
 <img class='clear' align="right" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki4cvu8jf2i1r0v9f7l.png" width="30%"  border="3"/>
 
 <details open>
