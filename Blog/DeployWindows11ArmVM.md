@@ -19,24 +19,20 @@ This stores the name in a variable, creates a resource group and parameterizes t
 <a href="https://shell.azure.com/powershell" target="_blank">
    <img align="right" src="https://learn.microsoft.com/azure/cloud-shell/media/embed-cloud-shell/launch-cloud-shell-1.png" alt="Launch Cloud Shell">
 </a>
+
+
 <img align="right" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki4cvu8jf2i1r0v9f7l.png" width="30%"  border="3"/>
 
 <details open>
   <summary><u>Variables</u></summary>
 
-<pre id="code1"></pre>
+<pre class="powershell" id="code1"></pre>
 
 </details>
 
-
-
-<pre id="code1" class="powershell"></pre>
-
-
-
 This is the network configuration to create an NSG allowing remote desktop connections and a public IP address pointing to the [accelerated networking][4] enabled network card that the virtual machine would use. Add the IP where the RDP connection would come from.
 
-<pre id="code2" class="powershell"></pre>
+<pre id="code2" class="powershell clear"></pre>
 
 The virtual machine configuration specifies the name, [size][5], credentials, time zone, [image details][10], [update behavior][6] and [diagnostics configuration][7] of the VM. Add your password.
 
