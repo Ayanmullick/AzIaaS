@@ -20,6 +20,7 @@
       );
 
       let codeBlock = document.getElementById("code" + (index + 1));
+      console.log(codeBlock);
       if (codeBlock !== null) {
         codeBlock.textContent = item.content;
          hljs.highlightElement(codeBlock);
