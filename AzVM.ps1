@@ -22,6 +22,8 @@ $vmConfig= New-AzVMConfig -VMName $Name'VM' -VMSize Standard_E4ps_v5 -LicenseTyp
             Set-AzVMSourceImage -PublisherName MicrosoftWindowsDesktop -Offer windows11preview-arm64 -Skus win11-22h2-ent  -Version latest|  
             Set-AzVMOSDisk -Name $Name'D' -Caching ReadWrite -CreateOption FromImage|    
             Add-AzVMNetworkInterface -Id $NIC.Id|Set-AzVMBootDiagnostic -ResourceGroupName $RG.ResourceGroupName -Enable   
-#endregion                    
+#endregion 
 
+#region
 New-AzVM @Params -VM $vmConfig  #Deploys the VM
+#endregion
