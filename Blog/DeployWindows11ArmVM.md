@@ -1,7 +1,6 @@
 # Azure PowerShell to deploy Win11 Arm VM
 <script>
   let fetchRes = fetch("https://raw.githubusercontent.com/Ayanmullick/AzIaaS/master/AzVM.ps1")
-
   fetchRes.then(response => response.clone().text()).then(data => {
     const regexPattern =
       /#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
