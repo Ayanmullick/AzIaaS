@@ -35,6 +35,9 @@ document.addEventListener("DOMContentLoaded", function () {
   if (path !== "" && path !== null) {
     renderFileContent(path);
   } 
+
+});
+
   var findBlocks = function (data) {
       const regexPattern =/#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
     const matches = [];
@@ -63,7 +66,4 @@ document.addEventListener("DOMContentLoaded", function () {
       }
   
     });
-  }
-
-  
-});
+  }  
