@@ -63,7 +63,7 @@ function showBlocks(data, variableNames) {
   var blocks = findBlocks(data, variableNames);
   blocks.forEach(function (item, index) {
     let variableNameBlock = document.getElementById(item.variableName);
-    let codeBlock = document.getElementById("code" + (index + 1));
+    let codeBlock = document.getElementById("code" + index);
     if (codeBlock !== null) {
       codeBlock.textContent = item.content;
       hljs.highlightElement(codeBlock);
