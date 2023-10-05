@@ -27,3 +27,8 @@ $vmConfig= New-AzVMConfig -VMName $Name'VM' -VMSize Standard_E4ps_v5 -LicenseTyp
 #region Deploys
 New-AzVM @Params -VM $vmConfig  #Deploys the VM
 #endregion
+
+
+#region testRegion
+test
+#endRegion
