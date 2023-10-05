@@ -13,15 +13,15 @@
   })
 </script>
 
-
+<a href="https://shell.azure.com/powershell" target="_blank">
+   <img align="right" src="https://learn.microsoft.com/azure/cloud-shell/media/embed-cloud-shell/launch-cloud-shell-1.png" alt="Launch Cloud Shell">
+</a>
 
 I wanted to explore the benefits of [Azure ARM VMs that run on Arm-based processors][1]. They offer outstanding price-performance and power-efficiency for various workloads. In this snippet, I show how to deploy a [Generation 2][2] Windows 11 ARM virtual machine with basic [naming standard][11] and diagnostics using PowerShell cmdlets.
 
 This stores the name in a variable, creates a resource group and parameterizes the location and Resource Group name for [splatting][3].
 
-<a href="https://shell.azure.com/powershell" target="_blank">
-   <img align="right" src="https://learn.microsoft.com/azure/cloud-shell/media/embed-cloud-shell/launch-cloud-shell-1.png" alt="Launch Cloud Shell">
-</a>
+<img align="right" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki4cvu8jf2i1r0v9f7l.png" width="30%"  border="3"/>
 
 <details open>
   <summary><u>Variables</u></summary>
@@ -34,8 +34,6 @@ This stores the name in a variable, creates a resource group and parameterizes t
 
 <pre id="code1" class="powershell"></pre>
 
-
-<img align="right" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki4cvu8jf2i1r0v9f7l.png" width="30%"  border="3"/>
 
 
 This is the network configuration to create an NSG allowing remote desktop connections and a public IP address pointing to the [accelerated networking][4] enabled network card that the virtual machine would use. Add the IP where the RDP connection would come from.
