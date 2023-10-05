@@ -27,9 +27,7 @@
         codeBlock.textContent = item.content;
         hljs.highlightElement(codeBlock);
       }
-      if (variableNameBlock !== null) {
-        variableNameBlock.textContent = item.variableName;
-      }
+  
     });
   })
 </script>
@@ -48,19 +46,19 @@ This stores the name in a variable, creates a resource group and parameterizes t
 
 
 <details open>
-<summary><u id="variableName1"></u></summary>
+<summary><u id="variableName1">Varaiables</u></summary>
 <pre class="powershell" id="code1"></pre>
 </details>
 
 This is the network configuration to create an NSG allowing remote desktop connections and a public IP address pointing to the [accelerated networking][4] enabled network card that the virtual machine would use. Add the IP where the RDP connection would come from.
 <details open>
-<summary><u id="variableName2"></u></summary>
+<summary><u id="variableName2">Network Configuration</u></summary>
 <pre id="code2" class="powershell clear"></pre>
 </details>
 
 The virtual machine configuration specifies the name, [size][5], credentials, time zone, [image details][10], [update behavior][6] and [diagnostics configuration][7] of the VM. Add your password.
 <details open>
-<summary><u id="variableName3"></u></summary>
+<summary><u id="variableName3">Virtual Machine Configuration</u></summary>
 <pre id="code3" class="powershell"></pre>
 </details>
 
