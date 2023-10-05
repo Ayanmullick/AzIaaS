@@ -36,6 +36,8 @@
 
 <p>I wanted to explore the benefits of [Azure ARM VMs that run on Arm-based processors][1]. They offer outstanding price-performance and power-efficiency for various workloads. In this snippet, I show how to deploy a [Generation 2][2] Windows 11 ARM virtual machine with basic [naming standard][11] and diagnostics using PowerShell cmdlets.</p>
 
+<img align="right" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki4cvu8jf2i1r0v9f7l.png" width="30%"  border="3"/>
+
 This stores the name in a variable, creates a resource group and parameterizes the location and Resource Group name for [splatting][3].
 
 <a href="https://shell.azure.com/powershell" target="_blank">
@@ -43,7 +45,7 @@ This stores the name in a variable, creates a resource group and parameterizes t
 </a>
 <br><br>
 
-<img align="right" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki4cvu8jf2i1r0v9f7l.png" width="30%"  border="3"/>
+
 
 <details open>
 <summary><u id="variableName1"></u></summary>
