@@ -62,7 +62,7 @@ var findBlocks = function (data, variableNames) {
 function showBlocks(data, variableNames) {
   var blocks = findBlocks(data, variableNames);
   blocks.forEach(function (item, index) {
-    let variableNameBlock = document.getElementById(`variableName${index + 1}`);
+    let variableNameBlock = document.getElementById(item.variableName);
     let codeBlock = document.getElementById("code" + (index + 1));
     if (codeBlock !== null) {
       codeBlock.textContent = item.content;
