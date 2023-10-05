@@ -23,14 +23,12 @@
       let codeBlock = document.getElementById("code" + (index + 1));
       if (codeBlock !== null) {
         codeBlock.textContent = item.content;
+         hljs.highlightElement(codeBlock);
       }
       if (variableNameBlock !== null) {
         variableNameBlock.textContent = item.variableName;
       }
     });
-   /* hljs.highlightElement(document.getElementById("code1"));
-    hljs.highlightElement(document.getElementById("code2"));
-    hljs.highlightElement(document.getElementById("code3"));*/
   })
 </script>
 
