@@ -26,6 +26,10 @@ document.addEventListener("DOMContentLoaded", function () {
         } catch (error) {
           console.log(error);
         }
+        let links = document.querySelectorAll("a");
+        for (let i = 0; i < links.length; i++) {
+          links[i].setAttribute("target", "_blank");
+        }
       });
   }
 
@@ -38,11 +42,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-  var findBlocks = function (data) {
-      const regexPattern =/#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
-    const matches = [];
-    while ((match = regexPattern.exec(data)) !== null) {
-      const variableName = match.groups.variableName.trim();
+var findBlocks = function (data, variableNames) {
+  const regexPattern =
+    /#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
+  const matches = [];
+  while ((match = regexPattern.exec(data)) !== null) {
+    const variableName = match.groups.variableName.trim();
+    if (variableNames.includes(variableName)) {
       const content = match.groups.content.trim();
 
       matches.push({
@@ -50,20 +56,21 @@ document.addEventListener("DOMContentLoaded", function () {
         content,
       });
     }
-    return matches;
   }
-  function showBlocks(data) {
-        var blocks = findBlocks(data);
-    blocks.forEach(function (item, index) {
-      let variableNameBlock = document.getElementById(
-        `variableName${index + 1}`
-      );
+  return matches;
+};
+function showBlocks(data, variableNames) {
+  var blocks = findBlocks(data, variableNames);
+  blocks.forEach(function (item, index) {
+    let variableNameBlock = document.getElementById(`variableName${index + 1}`);
+    let codeBlock = document.getElementById("code" + (index + 1));
+    if (codeBlock !== null) {
+      codeBlock.textContent = item.content;
+      hljs.highlightElement(codeBlock);
+    }
+    if (variableNameBlock !== null) {
+      variableNameBlock.textContent = item.variableName;
+    }
+  });
+}
 
-      let codeBlock = document.getElementById("code" + (index + 1));
-      if (codeBlock !== null) {
-        codeBlock.textContent = item.content;
-        hljs.highlightElement(codeBlock);
-      }
-  
-    });
-  }  
