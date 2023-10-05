@@ -3,12 +3,26 @@
   let fetchRes = fetch("https://raw.githubusercontent.com/Ayanmullick/AzIaaS/master/AzVM.ps1")
 
   fetchRes.then(response => response.clone().text()).then(data => {const lines = data.split("\n");
-    document.getElementById("code1").textContent = lines.slice(1, 4).join("\n");
-    document.getElementById("code2").textContent = lines.slice(6, 13).join("\n");
-    document.getElementById("code3").textContent = lines.slice(15, 23).join("\n");
-    hljs.highlightElement(document.getElementById("code1"));
+      const regexPattern =
+      /#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
+    const matches = [];
+    while ((match = regexPattern.exec(data)) !== null) {
+      console.log(match.groups);
+      const variableName = match.groups.variableName.trim();
+      const content = match.groups.content.trim();
+
+      matches.push({
+        variableName,
+        content,
+      });
+    }
+    matches.forEach(function (item, index) {
+      let codeBlock = document.getElementById("code" + (index + 1));
+      codeBlock.textContent = item.content;
+    });
+   /* hljs.highlightElement(document.getElementById("code1"));
     hljs.highlightElement(document.getElementById("code2"));
-    hljs.highlightElement(document.getElementById("code3"));
+    hljs.highlightElement(document.getElementById("code3"));*/
   })
 </script>
 
