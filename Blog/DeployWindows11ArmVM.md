@@ -1,6 +1,6 @@
 # Azure PowerShell to deploy Win11 Arm VM
 <script>
-  let findBlocks = function () {
+  let findBlocks = function (data) {
       const regexPattern =/#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
     const matches = [];
     while ((match = regexPattern.exec(data)) !== null) {
@@ -16,7 +16,7 @@
   }
   let fetchRes = fetch("https://raw.githubusercontent.com/amirkacem/AzIaaS/master/AzVM.ps1")
   fetchRes.then(response => response.clone().text()).then(data => {
-    let blocks = findBlocks();
+    let blocks = findBlocks(data);
     blocks.forEach(function (item, index) {
       let variableNameBlock = document.getElementById(
         `variableName${index + 1}`
