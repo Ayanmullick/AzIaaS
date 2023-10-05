@@ -9,7 +9,7 @@
     ];
   var fetchRes = fetch("https://raw.githubusercontent.com/amirkacem/AzIaaS/master/"+fileName)
   fetchRes.then(response => response.clone().text()).then(data => {
-    showBlocks();
+    showBlocks(data);
   })
 </script>
 
