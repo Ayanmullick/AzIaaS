@@ -35,4 +35,19 @@ document.addEventListener("DOMContentLoaded", function () {
   if (path !== "" && path !== null) {
     renderFileContent(path);
   } 
+  var findBlocks = function (data) {
+      const regexPattern =/#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
+    const matches = [];
+    while ((match = regexPattern.exec(data)) !== null) {
+      const variableName = match.groups.variableName.trim();
+      const content = match.groups.content.trim();
+
+      matches.push({
+        variableName,
+        content,
+      });
+    }
+    return matches;
+  }
+  
 });
