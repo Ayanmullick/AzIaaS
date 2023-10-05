@@ -1,16 +1,4 @@
 # Azure PowerShell to deploy Win11 Arm VM
-<style>
-  .img1 {
-    position: absolute;
-    right: 0px;
-    top: 80px;
-  }
-  .img2 {
-      position: absolute;
-    right: 0px;
-    top: 110px;
-  }
-</style>
 <script>
   let fetchRes = fetch("https://raw.githubusercontent.com/Ayanmullick/AzIaaS/master/AzVM.ps1")
 
