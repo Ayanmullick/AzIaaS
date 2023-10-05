@@ -34,7 +34,7 @@
   })
 </script>
 
-<p>I wanted to explore the benefits of [Azure ARM VMs that run on Arm-based processors][1]. They offer outstanding price-performance and power-efficiency for various workloads. In this snippet, I show how to deploy a [Generation 2][2] Windows 11 ARM virtual machine with basic [naming standard][11] and diagnostics using PowerShell cmdlets.</p>
+I wanted to explore the benefits of [Azure ARM VMs that run on Arm-based processors][1]. They offer outstanding price-performance and power-efficiency for various workloads. In this snippet, I show how to deploy a [Generation 2][2] Windows 11 ARM virtual machine with basic [naming standard][11] and diagnostics using PowerShell cmdlets.
 
 <img align="right" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki4cvu8jf2i1r0v9f7l.png" width="30%"  border="3"/>
 
