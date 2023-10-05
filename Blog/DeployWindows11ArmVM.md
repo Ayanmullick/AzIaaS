@@ -19,15 +19,17 @@ I wanted to explore the benefits of [Azure ARM VMs that run on Arm-based process
 
 This stores the name in a variable, creates a resource group and parameterizes the location and Resource Group name for [splatting][3].
 
+<a href="https://shell.azure.com/powershell" target="_blank">
+   <img align="right" src="https://learn.microsoft.com/azure/cloud-shell/media/embed-cloud-shell/launch-cloud-shell-1.png" alt="Launch Cloud Shell">
+</a>
+
 <details open>
   <summary><u>Variables</u></summary>
 
 <pre id="code1"></pre>
 
 </details>
-<a href="https://shell.azure.com/powershell" target="_blank">
-   <img align="right" src="https://learn.microsoft.com/azure/cloud-shell/media/embed-cloud-shell/launch-cloud-shell-1.png" alt="Launch Cloud Shell">
-</a>
+
 
 
 <pre id="code1" class="powershell"></pre>
