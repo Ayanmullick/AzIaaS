@@ -16,7 +16,7 @@
       });
     }
     matches.forEach(function (item, index) {
-      let variableNameBlock = document.getElementById(`variable${index + 1}`);
+      let variableNameBlock = document.getElementById(`variableName${index + 1}`);
       let codeBlock = document.getElementById("code" + (index + 1));
       codeBlock.textContent = item.content;
       variableNameBlock.textContent = item.variableName;
