@@ -5,7 +5,7 @@ $RG      = New-AzResourceGroup -Location $Location -Name ($Name+'RG')
 $Params  = @{ResourceGroupName  = $RG.ResourceGroupName; Location = $Location; Verbose=$true}
 #endregion
 
-#region Network configuration
+#region NetworkConfiguration
 $RDParams= @{Name= "$Name'RDPRule'"; Description= 'Allow RDP'; Access= 'Allow'; Protocol= 'Tcp'; Direction= 'Inbound'; SourcePortRange= '*'; DestinationPortRange= '3389'}
 $RDPRule = New-AzNetworkSecurityRuleConfig @RDPParams  -Priority 200 -SourceAddressPrefix <YourIP> -DestinationAddressPrefix VirtualNetwork
 $NSG     = New-AzNetworkSecurityGroup @Params -Name $Name'NSG' -SecurityRules $RDPRule
@@ -15,7 +15,7 @@ $PIP     = New-AzPublicIpAddress @Params -Name $Name'PIP' -AllocationMethod Dyna
 $NIC     = New-AzNetworkInterface @Params -Name $Name'NIC' -SubnetId $Vnet.Subnets[0].Id -PublicIpAddressId $PIP.Id -EnableAcceleratedNetworking
 #endregion
 
-#region Virtual Machine Configuration
+#region VirtualMachineConfiguration
 $cred    = New-Object System.Management.Automation.PSCredential "admin",$(ConvertTo-SecureString '<YourPassword>' -asplaintext -force)
 $vmConfig= New-AzVMConfig -VMName $Name'VM' -VMSize Standard_E4ps_v5 -LicenseType Windows_Client| 
             Set-AzVMOperatingSystem -Windows -ComputerName $Name'VM' -Credential $cred -TimeZone 'Central Standard Time' -ProvisionVMAgent -EnableAutoUpdate| 
@@ -24,7 +24,7 @@ $vmConfig= New-AzVMConfig -VMName $Name'VM' -VMSize Standard_E4ps_v5 -LicenseTyp
             Add-AzVMNetworkInterface -Id $NIC.Id|Set-AzVMBootDiagnostic -ResourceGroupName $RG.ResourceGroupName -Enable   
 #endregion 
 
-#region Deploys
+#region DeploysVM
 New-AzVM @Params -VM $vmConfig  #Deploys the VM
 #endregion
 
