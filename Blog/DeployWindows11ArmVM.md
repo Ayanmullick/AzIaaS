@@ -16,7 +16,7 @@
       });
     }
     matches.forEach(function (item, index) {
-      let variableNameBlock = document.getElementById(`variable{index + 1}`);
+      let variableNameBlock = document.getElementById(`variable${index + 1}`);
       let codeBlock = document.getElementById("code" + (index + 1));
       codeBlock.textContent = item.content;
       variableNameBlock.textContent = item.variableName;
@@ -39,10 +39,8 @@ This stores the name in a variable, creates a resource group and parameterizes t
 <img align="right" src="https://dev-to-uploads.s3.amazonaws.com/uploads/articles/9ki4cvu8jf2i1r0v9f7l.png" width="30%"  border="3"/>
 
 <details open>
-  <summary><u id="variable1"></u></summary>
-
+<summary><u id="variable1"></u></summary>
 <pre class="powershell" id="code1"></pre>
-
 </details>
 
 This is the network configuration to create an NSG allowing remote desktop connections and a public IP address pointing to the [accelerated networking][4] enabled network card that the virtual machine would use. Add the IP where the RDP connection would come from.
