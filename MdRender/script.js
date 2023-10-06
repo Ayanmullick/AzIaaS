@@ -43,20 +43,22 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 var findBlocks = function (data, variableNames) {
-  const regexPattern =
-    /#region(?<variableName>.*|\n)(?<content>[\s\S]*?)(#endregion)/g;
   const matches = [];
-  while ((match = regexPattern.exec(data)) !== null) {
-    const variableName = match.groups.variableName.trim();
-    if (variableNames.includes(variableName)) {
-      const content = match.groups.content.trim();
+  variableNames.forEach(function (variable) {
+    const regexPattern = `#region(?<variableName> ${variable})(?<content>[\\s\\S]*?)(#endregion)`;
+    let regex = new RegExp(regexPattern, "g");
+    for (const match of data.matchAll(regex)) {
+      const variableName = match.groups.variableName.trim();
+      if (variableNames.includes(variableName)) {
+        const content = match.groups.content.trim();
 
-      matches.push({
-        variableName,
-        content,
-      });
+        matches.push({
+          variableName,
+          content,
+        });
+      }
     }
-  }
+  });
   return matches;
 };
 function showBlocks(data, variableNames) {
