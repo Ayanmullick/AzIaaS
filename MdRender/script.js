@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return fetch(fileUrl)
       .then((response) => response.text())
       .then((markdown) => {
-        document.getElementById("content").innerHTML = marked.parse(markdown);
+        document.getElementById("content").innerHTML = marked.parse(replaceGroups(markdown));
         var scriptTags = document.querySelectorAll("#content script");
 
         try {
@@ -80,3 +80,27 @@ function handleDocumentWrite(content) {
   var contentPlaceholder = document.getElementById("content");
   contentPlaceholder.innerHTML += content}
   window.document.write = handleDocumentWrite;
+
+
+  function replaceGroups(input) {
+    const groupRegex = /##\[\s*group\s*\](.*?)##\[\s*endgroup\s*\]/gs;
+    const result = input.replace(groupRegex, (match, content) => {;
+        // Extract the summary and the list items
+        const lines = content.trim().split('\n').map(line => line.trim()).filter(line => line);
+        const summary = lines.shift();
+        lines.pop();
+        const lists =  lines;
+        console.log(content);
+        if(lines.length > 0) {
+          return `<details><summary><u id="Variables">${summary}</u></summary>
+          ${lists.map(text => text.trim()).join('<br/>')}
+        </details>`;
+        } else {
+          return content;
+        }
+
+
+    });
+    const cleanedResult = result.replaceAll(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z/g, '');
+    return cleanedResult;
+}
