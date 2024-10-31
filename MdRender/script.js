@@ -7,9 +7,32 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function renderMarkDownFile(fileUrl) {
     return fetch(fileUrl)
-      .then((response) => response.text())
+      .then((response) => cleanDateTime(response.text()) )
       .then((markdown) => {
-        document.getElementById("content").innerHTML = marked.parse(replaceGroups(markdown));
+        markdown = marked.parse(replaceGroups(markdown))
+        completeStepContent = markdown.substring(markdown.indexOf('Post job'))
+        .split('\n')
+        .map((text,index) => `<div class='js-check-step-line CheckStep-line d-flex log-line-plain'>
+          <a class="CheckStep-line-number color-fg-muted d-inline-block text-mono text-normal flex-shrink-0">${index + 1}</a>
+          <span class="CheckStep-line-content d-inline-block flex-auto ml-3 js-check-line-content">
+          <span class="" style=""> ${text} </span>
+          </span>
+         </div>`)
+        .join('');
+        console.log(markdown);
+        setupStepContent = markdown.substring(0,markdown.indexOf("set up to track &#39;origin/main&#39;."))
+        .split('\n')
+        .map((text,index) => 
+             text.trim()
+          )
+      .join('');
+
+        
+        document.getElementById("completeStep").innerHTML = completeStepContent;
+        document.getElementById("setupStep").innerHTML = setupStepContent;
+
+        document.getElementById("content").innerHTML = marked.parse(markdown);
+
         var scriptTags = document.querySelectorAll("#content script");
 
         try {
@@ -90,7 +113,7 @@ function handleDocumentWrite(content) {
         const summary = lines.shift();
         lines.pop();
         const lists =  lines;
-        console.log(content);
+
         if(lines.length > 0) {
           return `<details><summary><u id="Variables">${summary}</u></summary>
           ${lists.map(text => text.trim()).join('<br/>')}
@@ -101,6 +124,8 @@ function handleDocumentWrite(content) {
 
 
     });
-    const cleanedResult = result.replaceAll(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z/g, '');
-    return cleanedResult;
+    return content;
 }
+
+const cleanDateTime = (result) => result.replaceAll(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z/g, '');
+
