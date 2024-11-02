@@ -141,7 +141,7 @@ const cleanDateTime = (result) => result.replaceAll(/\d{4}-\d{2}-\d{2}T\d{2}:\d{
 
 
 
-function createStepDetails(stepId) {
+function createStepDetails(stepId,stepText) {
 
   let detailsElement = document.createElement('details');
   detailsElement.className = 'Details-element CheckStep rounded-2 details-reset js-checks-log-details px-2 border';
@@ -158,7 +158,7 @@ function createStepDetails(stepId) {
       <path d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16Zm3.78-9.72a.751.751 0 0 0-.018-1.042.751.751 0 0 0-1.042-.018L6.75 9.19 5.28 7.72a.751.751 0 0 0-1.042.018.751.751 0 0 0-.018 1.042l2 2a.75.75 0 0 0 1.06 0Z"></path>
       </svg>
 
-      <span class="flex-1 ml-n1 mr-1 css-truncate css-truncate-overflow user-select-none"> Setup, Checkout </span>
+      <span class="flex-1 ml-n1 mr-1 css-truncate css-truncate-overflow user-select-none"> ${stepText} </span>
 
       <div class="text-mono text-normal text-small float-right">s</div>
     </div>
@@ -171,5 +171,5 @@ function createStepDetails(stepId) {
    return detailsElement;
 }
 
-document.getElementById('betweenContent').before(createStepDetails('setupStep'));
-document.getElementById('betweenContent').after(createStepDetails('completeStep'));
+document.getElementById('betweenContent').before(createStepDetails('setupStep','Setup, Checkout'));
+document.getElementById('betweenContent').after(createStepDetails('completeStep','Checkout, Complete'));
