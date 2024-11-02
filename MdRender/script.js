@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .join('');
 
 
-        setupStepContent = markdown.substring(0,markdown.indexOf("set up to track 'origin/main'."));
+        setupStepContent = markdown.substring(0,markdown.indexOf("'origin/main'."));
 
         betweenContent = markdown.substring(
           markdown.indexOf("[command]/usr/bin/git"),
