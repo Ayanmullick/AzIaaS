@@ -8,3 +8,6 @@ a {
 .clear {
   clear:both;
 }
+[open] .CheckStep-chevron {
+  transform: rotate(90deg);
+}
