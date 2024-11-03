@@ -1,34 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" data-color-mode="dark" 
-data-dark-theme="dark">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="MdRender/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/21.1.1/primer.css" integrity="sha512-DQRZcDaNuIkb4JiH6PHalnncWllAK5txkJVocLdyfglJSavW/HxQaJRJeRw5eEPnp+kD1QImSxCwUiOsRrCMEw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-      p {
-  overflow-x: auto;
-  white-space: pre-wrap;
-}
+<html lang="en">
 
-.log-line-command {
-    color: var(--fgColor-accent, var(--color-accent-fg));
-}
-    </style>
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="MdRender/style.css" />
+</head>
 
+<body>
+  <div id="content"></div>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
-    <div class="text-mono text-small py-1 my-2 js-checks-log-display-container ml-5 pl-3" id="betweenContent"></div>
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-dark-reasonable.min.css">
+  <script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script type="module" >
-      import {AnsiUp} from "https://cdn.jsdelivr.net/npm/ansi-up@1.0.0/dist/ansi-up.min.js"
-      const ansi_up = new AnsiUp();
-      window.ansi_up = ansi_up;
-      </script>
-    
-    <script src="MdRender/script.js"></script>
-  </body>
+  <script src="MdRender/script.js"></script>
+</body>
+
 </html>
