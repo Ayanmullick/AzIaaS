@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.getElementById("setupStep").innerHTML = marked.parse(setupStepContent);
         document.getElementById("completeStep").innerHTML = marked.parse(completeStepContent);
-        document.getElementById('betweenContent').innerHTML = marked.parse(betweenContent).replace(/(<\/span>|<\/div>|<\/a>)\s*<br\s*\/?>/g, '$1');
+        document.getElementById('betweenContent').innerHTML = marked.parse(betweenContent);
 
 
         let links = document.querySelectorAll("a");
