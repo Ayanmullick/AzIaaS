@@ -1,4 +1,6 @@
+
 document.addEventListener("DOMContentLoaded", function () {
+
   marked.use({ breaks: true });
 
   function renderFileContent(markdownFileUrl) {
@@ -9,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
     return fetch(fileUrl)
       .then((response) => response.text() ) 
       .then((markdown) => {
+        markdown = ansi_up.ansi_to_html(markdown);
         markdown = cleanDateTime(replaceGroups(markdown));
         completeStepContent = markdown.substring(markdown.indexOf('Post job'))
 
@@ -32,24 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById('betweenContent').innerHTML = marked.parse(betweenContent).replace(/(<\/span>|<\/div>|<\/a>)\s*<br\s*\/?>/g, '$1');
 
 
-        //document.getElementById("content").innerHTML = marked.parse(markdown);
-
-        var scriptTags = document.querySelectorAll("#content script");
-
-        try {
-          scriptTags.forEach(function (scriptTag) {
-            if (scriptTag.src) {
-              var externalScript = document.createElement("script");
-              externalScript.src = scriptTag.src;
-              document.getElementById("content").removeChild(scriptTag);
-              document.getElementById("content").appendChild(externalScript);
-            } else {
-              eval(scriptTag.innerText);
-            }
-          });
-        } catch (error) {
-          console.log(error);
-        }
         let links = document.querySelectorAll("a");
         for (let i = 0; i < links.length; i++) {
           links[i].setAttribute("target", "_blank");
@@ -66,44 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-var findBlocks = function (data, variableNames) {
-  const matches = [];
-  variableNames.forEach(function (variable) {
-    const regexPattern = `#region(?<variableName> ${variable})(?<content>[\\s\\S]*?)(#endregion)`;
-    let regex = new RegExp(regexPattern, "g");
-    for (const match of data.matchAll(regex)) {
-      const variableName = match.groups.variableName.trim();
-      if (variableNames.includes(variableName)) {
-        const content = match.groups.content.trim();
-
-        matches.push({
-          variableName,
-          content,
-        });
-      }
-    }
-  });
-  return matches;
-};
-function showBlocks(data, variableNames) {
-  var blocks = findBlocks(data, variableNames);
-  blocks.forEach(function (item, index) {
-    let variableNameBlock = document.getElementById(item.variableName);
-    let codeBlock = document.getElementById("code" + index);
-    if (codeBlock !== null) {
-      codeBlock.textContent = item.content;
-      hljs.highlightElement(codeBlock);
-    }
-    if (variableNameBlock !== null) {
-      variableNameBlock.textContent = item.variableName;
-    }
-  });
-}
-
-function handleDocumentWrite(content) {
-  var contentPlaceholder = document.getElementById("content");
-  contentPlaceholder.innerHTML += content}
-  window.document.write = handleDocumentWrite;
 
 
   function replaceGroups(input) {
