@@ -11,15 +11,6 @@ document.addEventListener("DOMContentLoaded", function () {
       .then((markdown) => {
         markdown = cleanDateTime(replaceGroups(markdown));
         completeStepContent = markdown.substring(markdown.indexOf('Post job'))
-        .split('\n')
-        .map((text,index) => `<div class='js-check-step-line CheckStep-line d-flex log-line-plain'>
-          <a class="CheckStep-line-number color-fg-muted d-inline-block text-mono text-normal flex-shrink-0"></a>
-          <span class="CheckStep-line-content d-inline-block flex-auto ml-3 js-check-line-content">
-          <span class="" style=""> ${text} </span>
-          </span>
-         </div>`)
-        .join('');
-
 
         setupStepContent = markdown.substring(0,markdown.indexOf("'origin/main'."));
 
@@ -28,9 +19,18 @@ document.addEventListener("DOMContentLoaded", function () {
           markdown.indexOf('Post job')
         );
 
+        betweenContent = betweenContent
+        .replaceAll(/\[command\](.*)/gm, '<span class="log-line-command">$1</span>');
+
+        completeStepContent = completeStepContent
+        .replaceAll(/\[command\](.*)/gm, '<span class="log-line-command">$1</span>');
+        setupStepContent = setupStepContent
+        .replaceAll(/\[command\](.*)/gm, '<span class="log-line-command">$1</span>');
+
         document.getElementById("setupStep").innerHTML = marked.parse(setupStepContent);
         document.getElementById("completeStep").innerHTML = marked.parse(completeStepContent);
-        document.getElementById('betweenContent').innerHTML = betweenContent;
+        document.getElementById('betweenContent').innerHTML = marked.parse(betweenContent).replace(/(<\/span>|<\/div>|<\/a>)\s*<br\s*\/?>/g, '$1');
+
 
         //document.getElementById("content").innerHTML = marked.parse(markdown);
 
@@ -136,6 +136,7 @@ function handleDocumentWrite(content) {
 
     return result;
 }
+
 
 const cleanDateTime = (result) => result.replaceAll(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z/g, '');
 
