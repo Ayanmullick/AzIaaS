@@ -1,3 +1,5 @@
 Libary       Verison  CDN LINK
 highlightjs: 11.9.0   https://cdnjs.com/libraries/highlight.js
 primer css : 21.1.1   https://cdnjs.com/libraries/Primer
+Marked     : latest   https://cdn.jsdelivr.net/npm/marked/marked.min.js
+ansi Up    : 1.0.0    https://www.jsdelivr.com/package/npm/ansi-up

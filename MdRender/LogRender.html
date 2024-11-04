@@ -34,37 +34,30 @@
 
             marked.use({ breaks: true });
 
-            function renderFileContent(markdownFileUrl) {
-                renderMarkDownFile(markdownFileUrl);
-            }
 
-            function renderMarkDownFile(fileUrl) {
+            function renderFileContent(fileUrl) {
                 return fetch(fileUrl)
                     .then((response) => response.text())
-                    .then((markdown) => {
+                    .then((content) => {
+                        
+                        createStepsElements();
 
-                        markdown = ansi_up.ansi_to_html(markdown);
-                        markdown = cleanDateTime(replaceGroups(markdown));
-                        let completeStepContent = markdown.substring(markdown.indexOf('Post job'))
+                        content = formatContent(content);
+                        
+                        let [
+                            completeStepContent,
+                            setupStepContent,
+                            betweenContent
+                        ] = getStepsContent(content)
 
-                        let setupStepContent = markdown.substring(0, markdown.indexOf("'origin/main'."));
 
-                        let betweenContent = markdown.substring(
-                            markdown.indexOf("[command]/usr/bin/git"),
-                            markdown.indexOf('Post job')
-                        );
-
-                        betweenContent = betweenContent
-                            .replaceAll(/\[command\](.*)/gm, '<span class="log-line-command">$1</span>');
-
-                        completeStepContent = completeStepContent
-                            .replaceAll(/\[command\](.*)/gm, '<span class="log-line-command">$1</span>');
-                        setupStepContent = setupStepContent
-                            .replaceAll(/\[command\](.*)/gm, '<span class="log-line-command">$1</span>');
-
-                        document.getElementById("setupStep").innerHTML = marked.parse(setupStepContent);
-                        document.getElementById("completeStep").innerHTML = marked.parse(completeStepContent);
-                        document.getElementById('betweenContent').innerHTML = marked.parse(betweenContent).replace(/(<\/div>|<\/a>)\s*<br\s*\/?>/g, '$1');
+                        document.getElementById("setupStep")
+                                .innerHTML = marked.parse(setupStepContent);
+                        document.getElementById("completeStep")
+                                .innerHTML = marked.parse(completeStepContent);
+                        document.getElementById('betweenContent')
+                                .innerHTML = marked.parse(betweenContent)
+                                                   .replace(/(<\/div>|<\/a>)\s*<br\s*\/?>/g, '$1');
 
 
                         let links = document.querySelectorAll("a");
@@ -74,7 +67,6 @@
                     });
             }
 
-
             const urlParams = new URLSearchParams(window.location.search);
             const path = urlParams.get("path");
             if (path !== "" && path !== null) {
@@ -83,7 +75,44 @@
 
         });
 
+        function createStepsElements() {
+            document.getElementById('betweenContent').before(createStepDetails('setupStep', 'Setup, Checkout'));
+            document.getElementById('betweenContent').after(createStepDetails('completeStep', 'Checkout, Complete'));
+        }
+        
+        function formatContent(content) {
+            content = ansi_up.ansi_to_html(content);
+            content = cleanDateTime(replaceGroups(content));
 
+            return content;
+        }
+
+        const cleanDateTime = (result) => result.replaceAll(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z/g, '');
+
+        function getStepsContent(content) {
+
+            content = replaceCommands(content);
+
+            let completeStepContent = content.substring(content.indexOf('Post job'))
+
+            let setupStepContent = content.substring(0, content.indexOf("'origin/main'."));
+            console.log(setupStepContent);
+            let betweenContent = content.substring(
+                content.indexOf("/usr/bin/git"),
+                content.indexOf('Post job')
+            );
+
+            return [completeStepContent,setupStepContent,betweenContent];
+
+        }
+
+
+        function replaceCommands(input) {
+            return input
+                   .replaceAll(/\[command\](.*)/gm, 
+                   '<span class="log-line-command">$1</span>'
+                   );
+        }
 
         function replaceGroups(input) {
             const groupRegex = /##\[\s*group\s*\](.*?)##\[\s*endgroup\s*\]/gs;
@@ -98,26 +127,22 @@
                     return `<details><summary><u>${summary}</u></summary>
         ${lists.map((text, index) => {
                         return `<div class='js-check-step-line CheckStep-line d-flex log-line-plain'>
-        <a class="CheckStep-line-number color-fg-muted d-inline-block text-mono text-normal flex-shrink-0"></a>
-        <span class="CheckStep-line-content d-inline-block flex-auto ml-3 js-check-line-content">
-        <span class="" style=""> ${text} </span>
-        </span>
-       </div>`;
-
-                    }).join('')}
-      </details>`;
+                                <a class="CheckStep-line-number color-fg-muted d-inline-block text-mono text-normal flex-shrink-0"></a>
+                                <span class="CheckStep-line-content d-inline-block flex-auto ml-3 js-check-line-content">
+                                <span class="" style=""> ${text} </span>
+                                </span>
+                               </div>`;
+                                }
+                               ).join('')}
+                            </details>`;
                 } else {
                     return content;
                 }
-
 
             });
 
             return result;
         }
-
-
-        const cleanDateTime = (result) => result.replaceAll(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z/g, '');
 
         function createStepDetails(stepId, stepText) {
 
@@ -125,32 +150,29 @@
             detailsElement.className = 'Details-element CheckStep rounded-2 details-reset js-checks-log-details px-2 border';
 
             detailsElement.innerHTML = `
-<summary class="CheckStep-header p-2 mb-1 rounded-2 js-check-step-summary uxr_CheckStep-header mx-2" style="top: 88px;">
-  <div class="d-flex flex-items-center">
+            <summary class="CheckStep-header p-2 mb-1 rounded-2 js-check-step-summary uxr_CheckStep-header mx-2" style="top: 88px;">
+            <div class="d-flex flex-items-center">
 
-    <svg class="octicon octicon-chevron-right js-check-step-chevron mr-2 flex-shrink-0 CheckStep-chevron" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="false" style="">
-        <path fill-rule="evenodd" d="M6.22 3.22a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 010-1.06z"></path>
-    </svg>
+                <svg class="octicon octicon-chevron-right js-check-step-chevron mr-2 flex-shrink-0 CheckStep-chevron" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="false" style="">
+                    <path fill-rule="evenodd" d="M6.22 3.22a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 010-1.06z"></path>
+                </svg>
 
-    <svg class="octicon octicon-check-circle-fill mr-3 flex-shrink-0 ml-1" title="This step passed" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
-    <path d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16Zm3.78-9.72a.751.751 0 0 0-.018-1.042.751.751 0 0 0-1.042-.018L6.75 9.19 5.28 7.72a.751.751 0 0 0-1.042.018.751.751 0 0 0-.018 1.042l2 2a.75.75 0 0 0 1.06 0Z"></path>
-    </svg>
+                <svg class="octicon octicon-check-circle-fill mr-3 flex-shrink-0 ml-1" title="This step passed" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
+                <path d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16Zm3.78-9.72a.751.751 0 0 0-.018-1.042.751.751 0 0 0-1.042-.018L6.75 9.19 5.28 7.72a.751.751 0 0 0-1.042.018.751.751 0 0 0-.018 1.042l2 2a.75.75 0 0 0 1.06 0Z"></path>
+                </svg>
 
-    <span class="flex-1 ml-n1 mr-1 css-truncate css-truncate-overflow user-select-none"> ${stepText} </span>
+                <span class="flex-1 ml-n1 mr-1 css-truncate css-truncate-overflow user-select-none"> ${stepText} </span>
 
-    <div class="text-mono text-normal text-small float-right">s</div>
-  </div>
-</summary>
+                <div class="text-mono text-normal text-small float-right">s</div>
+            </div>
+            </summary>
 
-<div class="text-mono text-small py-1 my-2 js-checks-log-display-container ml-5 pl-3" id="${stepId}">
-</div>
-`;
+            <div class="text-mono text-small py-1 my-2 js-checks-log-display-container ml-5 pl-3" id="${stepId}">
+            </div>
+            `;
 
             return detailsElement;
         }
-
-        document.getElementById('betweenContent').before(createStepDetails('setupStep', 'Setup, Checkout'));
-        document.getElementById('betweenContent').after(createStepDetails('completeStep', 'Checkout, Complete'));
 
     </script>
 
