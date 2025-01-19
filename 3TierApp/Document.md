@@ -1,16 +1,17 @@
 [Virtual Machines] (% include https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/VMs.md %)
 
 
-* [Section 2](NSGRules.md)
+[Network Security Group Rules] (% include https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/NsgRules.md %)
 
 
-[NSGRules.md]
+[Naming Convention] (% include https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/NamingConvention.md %)
+[Abbreviatons] (% include https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/Abbreviations.md %) 
 
-#include "NSGRules.md"
+[align=right]
 
 
 
-Currently blocked by bug.
+Sparse checkout is currently blocked by bug.
 https://github.com/actions/checkout/issues/1602#issuecomment-2048656906
 Resume once the 'Deploy Virtual machines' step in the 'AzPSImageInfraDeploymentWithApproval' workflow populates the resource group name in the end correctly.
 
