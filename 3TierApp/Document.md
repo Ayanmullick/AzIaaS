@@ -21,8 +21,7 @@ This is deploying a [three-tier application architecture][1] on virtual machines
 
 
 <script>
-  var fetchRes = fetch("https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/GovResource.ps1");
-  fetchRes.then(response => response.clone().text()).then(data => {
+  fetch("https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/GovResource.ps1").then(response => response.clone().text()).then(data => {
     showBlocks(data,{ code0 : "GovernanceResources", code1 : "NetworkResources", code2 : "OutputForNextJob"});
   });
 
