@@ -21,14 +21,13 @@ This is deploying a [three-tier application architecture][1] on virtual machines
 
 
 <script>
-  var allowedVariables = { code0 : "GovernanceResources", code1 : "NetworkResources", code2 : "OutputForNextJob"};
   var fetchRes = fetch("https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/GovResource.ps1");
   fetchRes.then(response => response.clone().text()).then(data => {
-    showBlocks(data,allowedVariables);
+    showBlocks(data,{ code0 : "GovernanceResources", code1 : "NetworkResources", code2 : "OutputForNextJob"});
   });
 
    fetch("https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/VMs.ps1").then(response => response.clone().text()).then(data => {
-    showBlocks(data,{ code4 : "VirtualMachineCreation"});
+    showBlocks(data,{ code3 : "VirtualMachineCreation"});
   })
 </script>
 
@@ -61,7 +60,7 @@ Here is a link to the [Governance resources deployment execution][2]
 This deploys the required virtual machines in the same resource group using the previously prestaged governance resources.
 
 <details open>
-<summary><u id="VirtualMachineCreation"></u></summary> <pre class="powershell" id="code4"></pre>
+<summary><u id="VirtualMachineCreation"></u></summary> <pre class="powershell" id="code3"></pre>
 </details>
 
 
