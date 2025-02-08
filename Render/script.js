@@ -15,21 +15,17 @@ document.addEventListener("DOMContentLoaded", function () {
           .replace('atom-one-light.min.css','atom-one-dark-reasonable.min.css');
     }
   });
-
+  inverseCollapseButton.dataset.open = 'true';
   inverseCollapseButton.addEventListener('click', function (e)  {
+    let button = e.target;
     document.querySelectorAll('details').forEach((item) => {
-      if(this.textContent === '+') {
+      if(button.dataset.open === 'true') {
         item.open = true;
       } else {
         item.open = false;
       }
-
     });
-    if(this.textContent === '+') {
-      this.textContent = '-';
-    } else {
-      this.textContent = '+';
-    }
+    button.dataset.open = (button.dataset.open === 'true') ? 'false' : 'true';
   });
 
   marked.use({ break: true });
@@ -54,6 +50,11 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       document.getElementById("content").innerHTML = marked.parse(markdown);
+      const titleElement = document.querySelector("h1");
+
+      if(titleElement) {
+        document.title = titleElement.textContent;
+      }
       document.querySelectorAll("#content script").forEach(scriptTag => {
         if (scriptTag.src) {
           const externalScript = document.createElement("script");

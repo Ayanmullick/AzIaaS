@@ -9,50 +9,18 @@
     table { border-collapse: collapse; border: 1px solid black; margin: 20px 0; }
     tr { border: 1px solid white; }
     th, td { border: 1px solid white; padding: 8px; text-align: left; }
-    .dark-theme {
-        background-color: black;
-        color: white;
-    }
-
-    .white-theme {
-        background-color: white;
-        color: #000;
-    }
-
-    .white-theme tr {
-        border: 1px solid black;
-    }
-    .white-theme th,.white-theme td{
-        border: 1px solid black;
-    }
-
-    .button-absolute {
-        position: absolute;
-        height: 25px;
-        cursor: pointer;
-    }
-    .button-switch-theme {
-    font-size: 16px;
-    font-weight: bold;
-    top: 20px;
-    right: 25px;
-    height: 25px;
-    width: 25px;
-    padding: 0px;
-}
-
-    .button-inverse-collapse {
-        font-size: 20px;
-        font-weight: bold;
-        top: 50px;
-        right: 25px;
-        width: 25px;
-    }
+    .dark-theme {background-color: black;color: white;}
+    .white-theme {background-color: white;color: #000;}
+    .white-theme tr {border: 1px solid black;}
+    .white-theme th,.white-theme td{border: 1px solid black;}
+    .button-fixed {position: fixed;height: 20px;cursor: pointer;}
+    .button-switch-theme {    font-size: 13px;font-weight: bold;top: 20px;right: 20px;height: 20px;width: 20px;padding: 0px;text-align: center;}
+    .button-inverse-collapse {  font-size: 12px;font-weight: bold;top: 50px;right: 20px;width: 20px;padding: 0;}
     </style>
 </head>
 <body class="dark-theme">
-<button id="switch-theme" class="button-absolute button-switch-theme">💡</button>
-<button id="inverse-collapses" class="button-absolute button-inverse-collapse">+</button>
+<button id="switch-theme" class="button-fixed button-switch-theme">💡</button>
+<button id="inverse-collapses" class="button-fixed button-inverse-collapse">☰</button>
 <div id="content"></div>
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -79,16 +47,17 @@
                     .replace('atom-one-light.min.css','atom-one-dark-reasonable.min.css');
             }
         });
-
+        inverseCollapseButton.dataset.open = 'true';
         inverseCollapseButton.addEventListener('click', function (e)  {
+            let button = e.target;
             document.querySelectorAll('details').forEach((item) => {
-                item.open = !item.open;
+                if(button.dataset.open === 'true') {
+                    item.open = true;
+                } else {
+                    item.open = false;
+                }
             });
-            if(this.textContent === '+') {
-                this.textContent = '-';
-            } else {
-                this.textContent = '+';
-            }
+            button.dataset.open = (button.dataset.open === 'true') ? 'false' : 'true';
         });
 
         marked.use({ break: true });
@@ -113,6 +82,11 @@
                 });
 
                 document.getElementById("content").innerHTML = marked.parse(markdown);
+                const titleElement = document.querySelector("h1");
+
+                if(titleElement) {
+                    document.title = titleElement.textContent;
+                }
                 document.querySelectorAll("#content script").forEach(scriptTag => {
                     if (scriptTag.src) {
                         const externalScript = document.createElement("script");
@@ -178,6 +152,10 @@
     async function getMarkdownFileContent(markdownFileUrl) {
         return fetch(markdownFileUrl).then(response => response.text());
     }
+</script>
+<script type="module">
+    import { handleDocRenderThemeChange, applyColorScheme } from "./theme-switcher.js";
+    applyColorScheme(handleDocRenderThemeChange);
 </script>
 </body>
 </html>

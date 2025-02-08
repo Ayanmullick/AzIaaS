@@ -36,28 +36,6 @@ th,td{
 .white-theme th,.white-theme td{
   border: 1px solid black;
 }
-
-.button-absolute {
-  position: absolute;
-  height: 25px;
-  cursor: pointer;
-}
-
-.button-switch-theme {
-    font-size: 16px;
-    font-weight: bold;
-    top: 20px;
-    right: 25px;
-    height: 25px;
-    width: 25px;
-    padding: 0px;
-}
-
-
-.button-inverse-collapse {
-  font-size: 20px;
-  font-weight: bold;
-  top: 50px;
-  right: 25px;
-  width: 25px;
-}
+.button-fixed {position: fixed;height: 20px;cursor: pointer;}
+.button-switch-theme {    font-size: 13px;font-weight: bold;top: 20px;right: 20px;height: 20px;width: 20px;padding: 0px;text-align: center;}
+.button-inverse-collapse {  font-size: 12px;font-weight: bold;top: 50px;right: 20px;width: 20px;padding: 0;}
