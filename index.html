@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="Render/style.css" />
 </head>
-<body class="dark-theme">
-  <button id="switch-theme" class="button-absolute button-switch-theme">💡</button>
-  <button id="inverse-collapses" class="button-absolute button-inverse-collapse">+</button>
+<body>
+  <button id="switch-theme" class="button-fixed button-switch-theme">💡</button>
+  <button id="inverse-collapses" class="button-fixed button-inverse-collapse">☰</button>
   <div id="content"></div>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
@@ -17,5 +17,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/powershell.min.js"></script>
 
   <script src="Render/script.js"></script>
+  <script type="module">
+    import { handleDocRenderThemeChange, applyColorScheme } from "./Render/theme-switcher.js";
+    applyColorScheme(handleDocRenderThemeChange);
+  </script>
 </body>
 </html>

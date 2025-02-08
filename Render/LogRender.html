@@ -9,15 +9,50 @@
         p { overflow-x: auto; white-space: pre-wrap; }
         .log-line-command { color: var(--fgColor-accent, var(--color-accent-fg)); }
         [open] .CheckStep-chevron { transform: rotate(90deg); }
+        .button-fixed {position: fixed;height: 20px;cursor: pointer;}
+        .button-switch-theme {    font-size: 13px;font-weight: bold;top: 20px;right: 20px;height: 20px;width: 20px;padding: 0px;text-align: center;}
+        .button-inverse-collapse {  font-size: 12px;font-weight: bold;top: 50px;right: 20px;width: 20px;padding: 0;}
     </style>
 </head>
 <body>
-    <div class="text-mono text-small py-1 my-2 js-checks-log-display-container ml-5 pl-3" id="betweenContent"></div>
+    <button id="switch-theme" class="button-fixed button-switch-theme">💡</button>
+    <button id="inverse-collapses" class="button-fixed button-inverse-collapse">☰</button>
+    <div style="width: 95%">
+        <div class="text-mono text-small py-1 my-2 js-checks-log-display-container ml-5 pl-3" id="betweenContent"></div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script type="module">
         import { AnsiUp } from "https://cdn.jsdelivr.net/npm/ansi-up@1.0.0/dist/ansi-up.min.js";
         const ansi_up = new AnsiUp();
         document.addEventListener("DOMContentLoaded", function () {
+            const themeSwitchButton = document.getElementById("switch-theme");
+            const inverseCollapseButton = document.getElementById("inverse-collapses");
+            themeSwitchButton.addEventListener("click", function () {
+                const htmlElementDataSet = document.documentElement.dataset;
+                if(htmlElementDataSet.colorMode === "dark") {
+                    htmlElementDataSet.colorMode = "light";
+                    delete htmlElementDataSet.darkTheme;
+                    htmlElementDataSet.lightTheme = "light";
+                } else {
+                    htmlElementDataSet.colorMode = "dark";
+                    delete htmlElementDataSet.lightTheme;
+                    htmlElementDataSet.darkTheme = "dark";
+                }
+            });
+
+            inverseCollapseButton.dataset.open = 'true';
+            inverseCollapseButton.addEventListener('click', function (e)  {
+                let button = e.target;
+                document.querySelectorAll('details').forEach((item) => {
+                    if(button.dataset.open === 'true') {
+                        item.open = true;
+                    } else {
+                        item.open = false;
+                    }
+                });
+                button.dataset.open = (button.dataset.open === 'true') ? 'false' : 'true';
+            });
+
             marked.use({ breaks: true });
             function renderFileContent(fileUrl) {
                 return fetch(fileUrl)
@@ -50,12 +85,28 @@
         }
         const cleanDateTime = (result) => result.replaceAll(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z/g, '');
         function getStepsContent(content) {
+            let keywords = ["'origin/main'.","Extracting the archive"];
             content = replaceCommands(content);
+            let setupKeywordSearchInfo = searchSetupStepIndex(content,keywords)
             let completeStepContent = content.substring(content.indexOf('Post job'));
-            let setupStepContent = content.substring(0, content.indexOf("'origin/main'."));
-            let betweenContent = content.substring(content.indexOf("/usr/bin/git"), content.indexOf('Post job'));
+            let setupStepContent = content.substring(0, setupKeywordSearchInfo['keyWordIndex']);
+            let betweenContent = content.substring(
+                setupKeywordSearchInfo['keyWordIndex'] + setupKeywordSearchInfo['keyword'].length  ,
+                content.indexOf('Post job')
+            );
             return [completeStepContent, setupStepContent, betweenContent];
         }
+
+        function searchSetupStepIndex(content,keywords) {
+            for(let i=0; i<keywords.length; i++) {
+                let keywordIndex = content.indexOf(keywords[i]);
+                if(keywordIndex !== -1) {
+                    return {'keyWordIndex' : keywordIndex,'keyword' : keywords[i]};
+                }
+            }
+            throw Error('No such Keyword or Index');
+        }
+
         function replaceCommands(input) {
             return input.replaceAll(/\[command\](.*)/gm, '<span class="log-line-command">$1</span>');
         }
@@ -86,19 +137,19 @@
             detailsElement.innerHTML = `
             <summary class="CheckStep-header p-2 mb-1 rounded-2 js-check-step-summary uxr_CheckStep-header mx-2" style="top: 88px;">
             <div class="d-flex flex-items-center">
-                <svg class="octicon octicon-chevron-right js-check-step-chevron mr-2 flex-shrink-0 CheckStep-chevron" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="false" style="top: 88px;">
-                    <path fill-rule="evenodd" d="M6.22 3.22a.75.75 0 011.06 0l4.25 4.25a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06-1.06L9.94 8 6.22 4.28a.75.75 0 010-1.06z"></path>
-                </svg>
-                <svg class="octicon octicon-check-circle-fill mr-3 flex-shrink-0 ml-1" title="This step passed" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true">
-                <path d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16Zm3.78-9.72a.751.751 0 0 0-.018-1.042.751.751 0 0 0-1.042-.018L6.75 9.19 5.28 7.72a.751.751 0 0 0-1.042.018.751.751 0 0 0-.018 1.042l2 2a.75.75 0 0 0 1.042-.018Z"></path>
-                </svg>
-                <span class="flex-1 ml-n1 mr-1 css-truncate css-truncate-overflow user-select-none">${stepText}</span>
+                ➤
+                ✅
+                <span class="flex-1 ml-n1 mr-1 css-truncate css-truncate-overflow user-select-none ml-2">${stepText}</span>
                 <div class="text-mono text-normal text-small float-right">s</div>
             </div>
             </summary>
             <div class="text-mono text-small py-1 my-2 js-checks-log-display-container ml-5 pl-3" id="${stepId}"></div>`;
             return detailsElement;
         }
+    </script>
+    <script type="module">
+        import { handleLogPageThemeChange, applyColorScheme } from "./theme-switcher.js";
+        applyColorScheme(handleLogPageThemeChange);
     </script>
 </body>
 </html>
