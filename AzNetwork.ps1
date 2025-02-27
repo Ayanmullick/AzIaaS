@@ -290,7 +290,7 @@ $profile.VPNProfileSASUrl
 Set-AzVMExtension -ResourceGroupName VMRG -Location northcentralus -VMName VM -Name networkWatcherAgent -Publisher Microsoft.Azure.NetworkWatcher -Type NetworkWatcherAgentWindows -TypeHandlerVersion 1.4 -Verbose #Worked
 
 
-$networkWatcher =Get-AzNetworkWatcher -Location northcentralus
+$networkWatcher =Get-AzNetworkWatcher -Location northcentralus  #The location is case sensitive
 
 $target = '/subscriptions/<>/resourceGroups/VMRG/providers/Microsoft.Compute/virtualMachines/VM'
 $storageId = '/subscriptions/<>/resourceGroups/StorageRG/providers/Microsoft.Storage/storageAccounts/storagenus'
@@ -298,6 +298,11 @@ $storagePath = 'https://storagenus.blob.core.windows.net/testblob'
 
 
 Test-AzNetworkWatcherConnectivity -NetworkWatcherName NetworkWatcher_northcentralus -ResourceGroupName NetworkWatcherRG -SourceId $target -DestinationAddress "bing.com" -DestinationPort 443 -Verbose    #Worked
+<#
+ConnectionStatus AvgLatencyInMs MinLatencyInMs MaxLatencyInMs ProbesSent ProbesFailed
+---------------- -------------- -------------- -------------- ---------- ------------
+Reachable        1              1              6              66         0
+#>
 Test-AzNetworkWatcherConnectivity -NetworkWatcherName NetworkWatcher_northcentralus -ResourceGroupName NetworkWatcherRG -SourceId $target -DestinationAddress $storagePath -DestinationPort 443 -Verbose  #Worked
 
 
