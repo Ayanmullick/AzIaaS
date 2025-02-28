@@ -303,10 +303,14 @@ ConnectionStatus AvgLatencyInMs MinLatencyInMs MaxLatencyInMs ProbesSent ProbesF
 ---------------- -------------- -------------- -------------- ---------- ------------
 Reachable        1              1              6              66         0
 #>
+
+$test.Hops|ft
+$test.HopsText
+
 Test-AzNetworkWatcherConnectivity -NetworkWatcherName NetworkWatcher_northcentralus -ResourceGroupName NetworkWatcherRG -SourceId $target -DestinationAddress $storagePath -DestinationPort 443 -Verbose  #Worked
 
-
-Test-AzNetworkWatcherConnectivity -NetworkWatcherName NetworkWatcher_northcentralus -ResourceGroupName NetworkWatcherRG -SourceId $target -DestinationId $storageId -DestinationPort 443 -Verbose  #Failed. Destinationid needs to be id on an NIC
+#Works only with VM id in destination. Doesn'twork with LB id or NIC id or storage account id
+Test-AzNetworkWatcherConnectivity -NetworkWatcherName NetworkWatcher_northcentralus -ResourceGroupName NetworkWatcherRG -SourceId $target -DestinationId $VM.Id -DestinationPort 443 -Verbose  
 
 #Works for virtual network gateway to storage account connectivity check.
 Start-AzNetworkWatcherResourceTroubleshooting -NetworkWatcher $networkWatcher -TargetResourceId $target -StorageId $storageId -StoragePath $storagePath
