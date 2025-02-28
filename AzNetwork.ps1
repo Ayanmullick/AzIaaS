@@ -316,6 +316,11 @@ Test-AzNetworkWatcherConnectivity -NetworkWatcherName NetworkWatcher_northcentra
 Start-AzNetworkWatcherResourceTroubleshooting -NetworkWatcher $networkWatcher -TargetResourceId $target -StorageId $storageId -StoragePath $storagePath
 Get-AzNetworkWatcherTroubleshootingResult -NetworkWatcher $NW -TargetResourceId $target
 
+#Didn't work.| https://learn.microsoft.com/en-us/powershell/module/az.network/invoke-aznetworkwatchernetworkconfigurationdiagnostic?view=azps-13.2.0#examples
+$IIS = Get-AzVM -ResourceGroupName '<>' -Name 'azweb01'
+$profile = New-AzNetworkWatcherNetworkConfigurationDiagnosticProfile -Direction Outbound -Protocol Tcp -Source $sourceIP -Destination $destinationIP -DestinationPort 443 
+Invoke-AzNetworkWatcherNetworkConfigurationDiagnostic -Location centralus -TargetResourceId $IIS.Id -Profile $profile -VerbosityLevel Full  #Location is case sensitive
+
 
 #CLI for latency report. Couldn't get to work
 Get-AzNetworkWatcherReachabilityReport -NetworkWatcher $networkWatcher -Location "West US" -Country "United States" -StartTime "2022-01-15" -EndTime "2022-01-15"
