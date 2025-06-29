@@ -17,7 +17,7 @@ $NIC      = New-AzNetworkInterface @Params -Name $Name'NIC' -SubnetId $Vnet.Subn
 #endregion
 
 #region VirtualMachineConfiguration
-$cred     = New-Object System.Management.Automation.PSCredential "admin",$(ConvertTo-SecureString '<YourPassword>' -asplaintext -force)
+$cred     = New-Object System.Management.Automation.PSCredential "admin",$(ConvertTo-SecureString '<>' -asplaintext -force)
 $vmConfig = New-AzVMConfig -VMName $Name'VM' -VMSize Standard_E4ps_v5 -LicenseType Windows_Client| 
             Set-AzVMOperatingSystem -Windows -ComputerName $Name'VM' -Credential $cred -TimeZone 'Central Standard Time' -ProvisionVMAgent -EnableAutoUpdate| 
             Set-AzVMSourceImage -PublisherName MicrosoftWindowsDesktop -Offer windows11preview-arm64 -Skus win11-22h2-ent  -Version latest|  
