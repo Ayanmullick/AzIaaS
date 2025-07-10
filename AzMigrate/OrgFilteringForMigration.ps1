@@ -1,8 +1,8 @@
 ﻿#region VM Migration filtering for one OrgDRSEnabled 
 
-$WFMVMs = Import-Excel -Path '.\Users\Ayan.Mullick\OneDrive - Verint Systems Ltd\Downloads\AugList.xlsx'| ? 'Organization Name' -Like '*WFM*Gla*'
-$WFMVMs = Import-Excel -Path '.\Users\Ayan.Mullick\OneDrive - Verint Systems Ltd\Downloads\AugList.xlsx'| ? {$_.'Organization Name' -Like '*WFM*Gla*' -and $_.'Keep it on-prem?' -ne 'Yes'}
-$WFMVMs = Import-Excel -Path '.\Users\Ayan.Mullick\OneDrive - Verint Systems Ltd\Downloads\AugList.xlsx'|  ? {$_.'Organization Name' -Like '*WFM*Gla*' -and $_.'Keep it on-prem?' -ne 'Yes' -and $_.'Move to Azure?' -eq $null}
+$WFMVMs = Import-Excel -Path '.\Users\Ayan.Mullick\<> Systems Ltd\Downloads\AugList.xlsx'| ? 'Organization Name' -Like '*WFM*Gla*'
+$WFMVMs = Import-Excel -Path '.\Users\Ayan.Mullick\<> Systems Ltd\Downloads\AugList.xlsx'| ? {$_.'Organization Name' -Like '*WFM*Gla*' -and $_.'Keep it on-prem?' -ne 'Yes'}
+$WFMVMs = Import-Excel -Path '.\Users\Ayan.Mullick\<> Systems Ltd\Downloads\AugList.xlsx'|  ? {$_.'Organization Name' -Like '*WFM*Gla*' -and $_.'Keep it on-prem?' -ne 'Yes' -and $_.'Move to Azure?' -eq $null}
 
 #Get-VM -Name $WFMVMs.Name| select Name,NumCpu,MemoryGB,VMHost,PowerState, @{n='Snapshot';e={(Get-Snapshot -VM $PSItem).count}} |Format-Table -Wrap -AutoSize
 Get-VM -Name $WFMVMs.Name| select Name,NumCpu,MemoryGB,VMHost,PowerState,@{n='OS';e={(Get-VMGuest -VM $PSItem).OSFullName}}, @{n='Snapshot';e={(Get-Snapshot -VM $PSItem).count}} |Format-Table -Wrap -AutoSize
@@ -28,7 +28,7 @@ $WfmWindowsOn = Get-VM -Name $WFMVMs.Name| select Name,NumCpu,MemoryGB,VMHost,Po
 
 
 
-$OctVms = Import-Excel -Path '.\Users\Ayan.Mullick\OneDrive - Verint Systems Ltd\Downloads\Move to Azure - 1400.xlsx' -WorksheetName Sheet1| ? { ($_.'Keep it on-prem?' -eq 'No' -or $_.'Keep it on-prem?' -eq $null) -and $_.'DevOps Engineer working on Migration' -EQ $null }
+$OctVms = Import-Excel -Path '.\Users\Ayan.Mullick\<> Systems Ltd\Downloads\Move to Azure - 1400.xlsx' -WorksheetName Sheet1| ? { ($_.'Keep it on-prem?' -eq 'No' -or $_.'Keep it on-prem?' -eq $null) -and $_.'DevOps Engineer working on Migration' -EQ $null }
 $OctVms| Group-Object 'Organization Name'|sort Count -Descending
 
 #Filters: Ms\3rd party supported, If part of Vapp, OS dynamic disk, Powered Off since

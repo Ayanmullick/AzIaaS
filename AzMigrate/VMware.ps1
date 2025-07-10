@@ -3,7 +3,7 @@
 Connect-VIServer -Server '<>.lab.local' -User amullick@lab.local -Password '<>' -Verbose   
 
 
-$RApiA = Import-Excel -Path '.\Users\Ayan.Mullick\OneDrive - Verint Systems Ltd\Downloads\move to cloud (version 1).xlsb.xlsx' -WorksheetName Sheet1| ? 'Organization Name' -EQ 'Engineering - Recorders API - Atlanta'
+$RApiA = Import-Excel -Path '.\Users\Ayan.Mullick\<> Systems Ltd\Downloads\move to cloud (version 1).xlsb.xlsx' -WorksheetName Sheet1| ? 'Organization Name' -EQ 'Engineering - Recorders API - Atlanta'
 
 $RApiA|ft Name,@{n='Status'; e={(Get-VM -Name $PSItem.Name).PowerState}},CPU,RAMGb,StorageGb, @{n='Snapshots'; e={(Get-Snapshot -VM $PSItem.Name).count}}
 
@@ -82,7 +82,7 @@ Get-VM -Name DockerDJ| Select Name, @{N='LastBootTime';E={($_ | Get-VIEvent -Max
 #region  v2
 Get-VM -Name $WFMVMs.Name -ErrorAction SilentlyContinue|? VApp -EQ $null|select Name,NumCpu,MemoryGB,VMHost,VApp, PowerState|Format-Table -Wrap -AutoSize
 
-$L3VMs = Import-Excel -Path '.\Users\Ayan.Mullick\OneDrive - Verint Systems Ltd\Downloads\AugList.xlsx'| ? {$_.'Organization Name' -Like '*L3*' -and $_.'Keep it on-prem?' -ne 'Yes'}
+$L3VMs = Import-Excel -Path '.\Users\Ayan.Mullick\<> Systems Ltd\Downloads\AugList.xlsx'| ? {$_.'Organization Name' -Like '*L3*' -and $_.'Keep it on-prem?' -ne 'Yes'}
 
 
 
@@ -91,7 +91,7 @@ $L3VMware = Get-VM -Name $L3VMs.Name -ErrorAction SilentlyContinue|? VApp -EQ $n
 $LastBoot = $L3VMware.Name|%{(Get-VIEvent -Entity $PSItem -Types Info).Where({$_.FullFormattedMessage -match "Task: Power On"})|Sort createdTime -Descending |select -First 1 -Property @{n= 'VM';e={$_.VM.Name}}, CreatedTime}
 
 
-$PowerOff = Import-Excel -Path '.\Users\Ayan.Mullick\OneDrive - Verint Systems Ltd\Downloads\vmBackingCsvExport.xlsx' -ImportColumns 1,8  #This file is the SNOW Commander Inventory export
+$PowerOff = Import-Excel -Path '.\Users\Ayan.Mullick\<> Systems Ltd\Downloads\vmBackingCsvExport.xlsx' -ImportColumns 1,8  #This file is the SNOW Commander Inventory export
 ($PowerOff.Where({$_.Name -EQ 'DC-046395-SSAML-0004'})).'Powered Off Since'
 Get-VApp L1_C_22_19_15.2.D_AI_HFR10_AC_MT_SAML-005|Get-VM|select Name,NumCpu,MemoryGB,VMHost,VApp, PowerState, @{n='PowerOffTime';e={($PowerOff.Where({$_.Name -EQ 'DC-046395-SSAML-0004'})).'Powered Off Since'}}
 $PowerOff|? {$VMs.Name -EQ $PSItem.Name}
