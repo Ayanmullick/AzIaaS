@@ -238,6 +238,17 @@ Get-AzureRmVirtualNetworkGatewayConnection -ResourceGroupName NLGPRDHubVNRG -Nam
 #endregion
 
 
+#Express Route stats  -PeeringType 'AzurePrivatePeering'
+(Get-AzExpressRouteCircuitStat -ResourceGroupName '<>' -ExpressRouteCircuitName '<>' ).PSObject.Properties |
+     ForEach-Object {  [PSCustomObject]@{ Name = $_.Name ;  ValueMB = [math]::Floor($_.Value / 1MB)    } }
+<#
+Name                 ValueMB
+----                 -------
+PrimaryBytesIn      85270.00
+PrimaryBytesOut   7770209.00
+SecondaryBytesIn  8598888.00
+SecondaryBytesOut 4326631.00
+#>
 
 
 
@@ -248,18 +259,18 @@ $SpokeVnet = Get-AzVirtualNetwork -ResourceGroupName 'rg-avd-d-c-02' -Name 'vnet
 
 Select-AzSubscription '<>'
 # Get Virtual WAN and Virtual Hub
-$Vwan = Get-AzVirtualWan -ResourceGroupName 'rg-vwan-p-c-01' -Name 'vwan-p-c-01'
-$Vhub = Get-AzVirtualHub -ResourceGroupName 'rg-vwan-p-c-01' -Name 'vhub-p-c-01'
+$Vwan = Get-AzVirtualWan -ResourceGroupName 'rg-<>' -Name 'vwan-p-c-01'
+$Vhub = Get-AzVirtualHub -ResourceGroupName 'rg-<>' -Name 'vhub-p-c-01'
 
-#$rt1 = Get-AzVHubRouteTable -ResourceGroupName 'rg-vwan-p-c-01' -VirtualHubName 'vhub-p-c-01' -Name DefaultRouteTable
+#$rt1 = Get-AzVHubRouteTable -ResourceGroupName 'rg-<>' -VirtualHubName 'vhub-p-c-01' -Name DefaultRouteTable
 #$routingconfig = New-AzRoutingConfiguration -AssociatedRouteTable $rt1.Id -Label @("default") -Id @($rt1.Id)|fl  #-StaticRoute @($route1)
 
-#$connection = Get-AzVirtualHubVnetConnection -ResourceGroupName 'rg-vwan-p-c-01' -ParentResourceName vhub-p-c-01 -Name 'vnet-dvsonline-d-c-01'
+#$connection = Get-AzVirtualHubVnetConnection -ResourceGroupName 'rg-<>' -ParentResourceName vhub-p-c-01 -Name 'vnet-dvsonline-d-c-01'
 
 
 
 # Create VNet connection to Virtual Hub
-New-AzVirtualHubVnetConnection -ResourceGroupName 'rg-vwan-p-c-01' -VirtualHubName 'vhub-p-c-01' -Name 'vnet-AVDEnt-d-01' -RemoteVirtualNetworkId $SpokeVnet.Id  -Verbose
+New-AzVirtualHubVnetConnection -ResourceGroupName 'rg-<>' -VirtualHubName 'vhub-p-c-01' -Name 'vnet-AVDEnt-d-01' -RemoteVirtualNetworkId $SpokeVnet.Id  -Verbose
 
     #-RoutingConfiguration $routingconfig   #Didn't work. Error: RoutingConfiguration'. Specified method is not supported.
     #-EnableInternetSecurity $false  #Didn't try
