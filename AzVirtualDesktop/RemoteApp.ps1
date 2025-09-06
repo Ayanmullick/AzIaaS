@@ -34,17 +34,19 @@ $Vnet     = New-AzVirtualNetwork @Params -Name ($Prefix+'VN') -AddressPrefix 192
 $PIP      = New-AzPublicIpAddress @Params -Name ($Prefix+'PIP') -AllocationMethod Dynamic -Sku Basic -DomainNameLabel $Name.ToLower()
 $NIC      = New-AzNetworkInterface @Params -Name ($Prefix+'VmNic') -SubnetId $Vnet.Subnets[0].Id -PublicIpAddressId $PIP.Id -EnableAcceleratedNetworking
 
-Register-AzProviderFeature -FeatureName UseStandardSecurityType -ProviderNamespace 'Microsoft.Compute'
+# -SecurityType Standard in VM config was needed to deploy ARM [-Offer 'windows11preview-arm64']. But ARM doesn't have any AVD images yet
+#Register-AzProviderFeature -FeatureName UseStandardSecurityType -ProviderNamespace 'Microsoft.Compute'
+
 
 $cred     = New-Object System.Management.Automation.PSCredential "<>",$(ConvertTo-SecureString '<>' -asplaintext -force)
 #Identity to system assigned. Needed for Entra join
-$vmConfig = New-AzVMConfig -VMName ($Prefix+'VM') -VMSize 'Standard_E4as_v6' -IdentityType SystemAssigned -LicenseType 'Windows_Client' -SecurityType Standard|
+$vmConfig = New-AzVMConfig -VMName ($Prefix+'VM') -VMSize 'Standard_E4as_v6' -IdentityType SystemAssigned -LicenseType 'Windows_Client'|
             Set-AzVMOperatingSystem -Windows -ComputerName ($Prefix+'VM') -Credential $cred -TimeZone 'Central Standard Time' -ProvisionVMAgent -EnableAutoUpdate|
             Set-AzVMSourceImage -PublisherName microsoftwindowsdesktop -Offer 'windows-11' -Skus 'win11-24h2-avd' -Version latest|
             Set-AzVMOSDisk -Name ($Prefix+'VmMd') -Caching ReadWrite -CreateOption FromImage|
             Add-AzVMNetworkInterface -Id $NIC.Id|Set-AzVMBootDiagnostic -ResourceGroupName $RG.ResourceGroupName -Enable
 New-AzVM @Params -VM $vmConfig
-# 'windows11preview-arm64'
+
 $vm = Get-AzVM -ResourceGroupName $RG.ResourceGroupName
 
 
