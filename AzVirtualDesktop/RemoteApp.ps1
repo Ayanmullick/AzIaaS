@@ -161,3 +161,14 @@ $AvdSpn = Get-EntraServicePrincipal -Filter "displayName eq 'Azure Virtual Deskt
 #If you assign this role at any level lower than a subscription, such as the resource group, host pool, or VM, prevents Start VM on Connect from working properly.
 New-AzRoleAssignment -Scope "/subscriptions/$((Get-AzContext).Subscription.Id)" -RoleDefinitionName 'Desktop Virtualization Power On Off Contributor' -ApplicationId $AvdSpn.AppId -Verbose
 #endregion
+
+
+
+#regionOther apps and their icon paths
+Get-StartApps | Where-Object { $_.Name -like "*Terminal*" }
+Windows Terminal App Path:   'shell:AppsFolder\Microsoft.WindowsTerminal_8wekyb3d8bbwe!App'
+Icon Path: C:\Windows\System32\cmd.exe
+
+
+
+#endregion
