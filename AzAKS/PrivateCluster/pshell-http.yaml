@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pshell-http
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pshell-http
+  template:
+    metadata:
+      labels:
+        app: pshell-http
+    spec:
+      containers:
+      - name: pshell
+        image: mcr.microsoft.com/dotnet/sdk:9.0
+        command: [ "pwsh", "-Command" ]
+        args:
+          - |
+            $listener = [System.Net.HttpListener]::new()
+            $listener.Prefixes.Add("http://*:8080/");
+            $listener.Start();
+            while ($true) {
+              $ctx = $listener.GetContext();
+              $resp = $ctx.Response;
+              $msg = [System.Text.Encoding]::UTF8.GetBytes("Hello from PowerShell");
+              $resp.OutputStream.Write($msg, 0, $msg.Length);
+              $resp.Close();
+            }
+        ports:
+        - containerPort: 8080
