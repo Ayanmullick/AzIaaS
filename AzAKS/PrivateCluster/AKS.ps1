@@ -218,7 +218,7 @@ Invoke-AzRestMethod -Method PATCH -Uri $uri -Payload $body -Verbose
 #endregion
 
 
-#Despite enabling Azure RBAC the node VM's are no Entra joined
+#Despite enabling Azure RBAC the node VM's are not Entra joined
 #Enable Azure storage extension
 #the alerts created aren't showing on the alerts blade. need to associate.
 #add 'kubernetes' not 'kubernetes service'  'baseline standard' azure policy to the cluster.
