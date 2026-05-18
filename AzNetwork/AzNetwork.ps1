@@ -254,23 +254,23 @@ SecondaryBytesOut 4326631.00
 
 #region Peer existing spoke vnet with existing Vwan hub
 Select-AzSubscription '<>'
-$SpokeVnet = Get-AzVirtualNetwork -ResourceGroupName 'rg-avd-d-c-02' -Name 'vnet-AVDEnt-d-01'
+$SpokeVnet = Get-AzVirtualNetwork -ResourceGroupName 'rg-avd-<>-02' -Name 'vnet-AVDEnt-<>-01'
 
 
 Select-AzSubscription '<>'
 # Get Virtual WAN and Virtual Hub
-$Vwan = Get-AzVirtualWan -ResourceGroupName 'rg-<>' -Name 'vwan-p-c-01'
-$Vhub = Get-AzVirtualHub -ResourceGroupName 'rg-<>' -Name 'vhub-p-c-01'
+$Vwan = Get-AzVirtualWan -ResourceGroupName '<rg-vwan>' -Name '<vwan>'
+$Vhub = Get-AzVirtualHub -ResourceGroupName '<rg-vwan>' -Name '<vhub name>'
 
-#$rt1 = Get-AzVHubRouteTable -ResourceGroupName 'rg-<>' -VirtualHubName 'vhub-p-c-01' -Name DefaultRouteTable
+#$rt1 = Get-AzVHubRouteTable -ResourceGroupName '<rg-vwan>' -VirtualHubName '<vhub name>' -Name DefaultRouteTable
 #$routingconfig = New-AzRoutingConfiguration -AssociatedRouteTable $rt1.Id -Label @("default") -Id @($rt1.Id)|fl  #-StaticRoute @($route1)
 
-#$connection = Get-AzVirtualHubVnetConnection -ResourceGroupName 'rg-<>' -ParentResourceName vhub-p-c-01 -Name 'vnet-dvsonline-d-c-01'
+#$connection = Get-AzVirtualHubVnetConnection -ResourceGroupName '<rg-vwan>' -ParentResourceName '<vhub name>' -Name 'vnet-dvsonline-<>-01'
 
 
 
 # Create VNet connection to Virtual Hub
-New-AzVirtualHubVnetConnection -ResourceGroupName 'rg-<>' -VirtualHubName 'vhub-p-c-01' -Name 'vnet-AVDEnt-d-01' -RemoteVirtualNetworkId $SpokeVnet.Id  -Verbose
+New-AzVirtualHubVnetConnection -ResourceGroupName '<rg-vwan>' -VirtualHubName '<vhub name>' -Name 'vnet-AVDEnt-d-01' -RemoteVirtualNetworkId $SpokeVnet.Id  -Verbose
 
     #-RoutingConfiguration $routingconfig   #Didn't work. Error: RoutingConfiguration'. Specified method is not supported.
     #-EnableInternetSecurity $false  #Didn't try
@@ -291,7 +291,7 @@ Set-AzVirtualNetworkGateway -VirtualNetworkGateway $gw -CustomRoute @0
 
 
 #Download profile on the client
-$profile=Get-AzVpnClientConfiguration -ResourceGroupName RG-Ztech-Dev-001 -Name GW-Ztech-Dev-001 -Verbose 
+$profile=Get-AzVpnClientConfiguration -ResourceGroupName 'RG-Ztech-Dev-001' -Name 'GW-Ztech-Dev-001' -Verbose 
 $profile.VPNProfileSASUrl
 
 

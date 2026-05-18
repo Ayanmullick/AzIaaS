@@ -183,7 +183,7 @@ SourceAddress          : <SourceAzVmPrivateIp>
 NetRoute (NextHop)     : <AzVnetVirtualRouterPrivateIp>
 PingSucceeded          : True
 PingReplyDetails (RTT) : 6 ms
-TraceRoute             : <AzFirewall SNAT PrivateIP>
+TraceRoute             : <AzFirewall SNAT PrivateIP0>
                          <AzPrivateIP1>
                          <AzFirewall SNAT PrivateIP1>
                          <OnpremRouterPrivateIP>
@@ -199,7 +199,7 @@ pathping '<Dc1PrivateIP>'
 <#Tracing route to radc2.<Domain>.local [<Dc1PrivateIP>]
 over a maximum of 30 hops:
   0  <SourceAzVmName>.<Domain>.local [<SourceAzVmPrivateIp>]
-  1  <AzFirewall SNAT PrivateIP>
+  1  <AzFirewall SNAT PrivateIP0>
   2  <AzPrivateIP1>
   3  <AzFirewall SNAT PrivateIP1>
   4  <OnpremRouterPrivateIP>
@@ -212,7 +212,7 @@ Computing statistics for 175 seconds...
 Hop  RTT    Lost/Sent = Pct  Lost/Sent = Pct  Address
   0                                           <SourceAzVmName>.<Domain>.local [<SourceAzVmPrivateIp>]
                                 0/ 100 =  0%   |
-  1  ---     100/ 100 =100%   100/ 100 =100%  <AzFirewall SNAT PrivateIP>
+  1  ---     100/ 100 =100%   100/ 100 =100%  <AzFirewall SNAT PrivateIP0>
                                 0/ 100 =  0%   |
   2    7ms     0/ 100 =  0%     0/ 100 =  0%  <AzPrivateIP1>
                                 0/ 100 =  0%   |
