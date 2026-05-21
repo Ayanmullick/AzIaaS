@@ -105,3 +105,142 @@ $apprule|select -Property Name, RuleType, @{N= 'Port' ; E= { $_.Protocols.Port }
 #'ipgroup-<>-01' IP group has internet access thru 'app-rule-<>-01'
 
 #endregion
+
+
+
+#region 
+#region AzFw rule for connectivity to AzPaaS services in Central US| Captures global and regional service tags
+$ruleCollectionGroup.Properties.RuleCollection.Rules|? Name -EQ CentralUSPaaSServices  
+<#
+protocols                : {TCP}
+SourceAddresses          : {172.25.16.240/28}
+DestinationAddresses     : {Sql.CentralUS, ActionGroup, AppConfiguration, AppServiceManagement…}
+SourceIpGroups           : {}
+DestinationIpGroups      : {}
+DestinationPorts         : {*}
+DestinationFqdns         : {}
+Description              : 
+ProtocolsText            : [
+                             "TCP"
+                           ]
+SourceAddressesText      : [
+                             "172.25.16.240/28"
+                           ]
+DestinationAddressesText : [
+                             "ActionGroup","AppConfiguration","AppServiceManagement","AzureActiveDirectory","AzureArcInfrastructure",
+                             "AzureDatabricks","AzureDataLake","AzureDataExplorerManagement","AzureDeviceUpdate","AzureDevOps","AzurePortal",
+                             "AzureResourceManager","AzureSecurityCenter","AzureSentinel","AzureSiteRecovery","AzureBackup","AzureTrafficManager","AzureUpdateDelivery",
+                             "DataFactoryManagement","LogicApps","LogicAppsManagement","KustoAnalytics","Marketplace","PowerBI","SqlManagement",
+                             "ApiManagement.CentralUS","AppService.CentralUS","AzureCloud.centralus","AzureContainerRegistry.CentralUS",
+                             "AzureCosmosDB.CentralUS","AzureKeyVault.CentralUS","DataFactory.CentralUS","MicrosoftContainerRegistry.CentralUS",
+                             "PowerPlatformInfra.CentralUS","ServiceBus.CentralUS","Sql.CentralUS","Storage.CentralUS"
+                           ]
+SourceIpGroupsText       : []
+DestinationIpGroupsText  : []
+DestinationPortsText     : [
+                             "*"
+                           ]
+DestinationFqdnsText     : []
+Name                     : CentralUSPaaSServices
+RuleType                 : NetworkRule
+#>
+#endregion
+
+#Use 'DestinationAddressesText' from above as $ServiceTags here
+$rule = New-AzFirewallNetworkRule -Name "CentralUSPaaSServices" -Description "Allow access to Central US PaaS services" `
+            -SourceAddress '172.25.16.240/28' -DestinationAddress $ServiceTags -DestinationPort * -Protocol TCP
+
+
+
+$newRule = New-AzFirewallPolicyNetworkRule -Name "AllowWebTraffic" -Description "Allow HTTP traffic" -Protocol "TCP" -SourceAddresses "*" -DestinationAddresses Internet -DestinationPorts "443"            
+<# Not applicable here
+$AzFW = Get-AzFirewall -ResourceGroupName $resourceGroupName #-Name $FirewallName 
+$defaultCollection = $AzFW.NetworkRuleCollections | Where-Object { $_.Name -eq "DefaultNetworkRuleCollectionGroup" }
+$defaultCollection.Rules.Add($rule)
+Set-AzFirewall -AzureFirewall $azFirewall     
+#>
+
+#region adding the rule didn't work
+$ruleCollection = $ruleCollectionGroup.Properties.RuleCollection
+$updatedRules = [System.Collections.Generic.List[Microsoft.Azure.Commands.Network.Models.PSAzureFirewallPolicyRule]]::new()
+$ruleCollection.Rules | ForEach-Object { [void]$updatedRules.Add($_) }
+
+# Add the new rule
+
+$updatedRules = $ruleCollection.Rules + @($Rule)
+
+$ruleCollection.Rules = $updatedRules
+
+
+$clonedRules = [System.Collections.Generic.List[Object]]::new()
+$ruleCollectionGroup.Properties.RuleCollection.Rules | ForEach-Object {
+    $clonedRules.Add($_)
+}
+
+# Now add your new rule
+$clonedRules.Add($rule)
+
+$ruleCollectionGroup.Properties.RuleCollection.Rules = $clonedRules
+
+Set-AzFirewallPolicyRuleCollectionGroup -ResourceGroupName $resourceGroupName `
+    -AzureFirewallPolicyName $firewallPolicyName `
+    -Name DefaultNetworkRuleCollectionGroup `
+    -RuleCollectionGroup $ruleCollectionGroup
+
+Set-AzFirewallPolicyRuleCollectionGroup -ResourceGroupName $resourceGroupName -AzureFirewallPolicyName $firewallPolicyName `
+    -Name DefaultNetworkRuleCollectionGroup -RuleCollectionGroup $ruleCollectionGroup
+#endregion
+    
+#endregion
+
+
+
+
+#region Add IP CIDR range to existing IP group
+(Get-AzIpGroup -Name 'ipgroup-<>-01').IpAddresses
+
+$ipGroup = Get-AzIpGroup -Name 'ipgroup-<>-01'
+
+#$TargetIP  172.25.21.128/25
+$ipGroup.IpAddresses.Add($TargetIP)  #This can directly add the vnet's range|  $TargetIP = $vnet.AddressSpace.AddressPrefixes
+Set-AzIpGroup -IpGroup $ipGroup -Verbose
+
+#Address range for vnet-AVD<>-01
+$ipGroup.IpAddresses.Add('172.25.18.48/28')
+Set-AzIpGroup -IpGroup $ipGroup -Verbose
+
+
+
+#endregion
+
+
+
+
+#region get Firewall backend ips
+(Get-AzFirewall -ResourceGroupName '<rg-vwan>' -Name "AzureFirewall_vhub<>").HubIPAddresses
+<#
+PrivateIPAddress PublicIPs
+---------------- ---------
+'<AzFirewall FrontEnd PrivateIP>'     Microsoft.Azure.Commands.Network.Models.PSAzureFirewallHubPublicIpAddresses
+
+Azure Firewall virtual hub (vWAN) private frontend IP — essentially the stable “ingress/egress” IP of the firewall in the virtual hub dataplane.
+#>
+(Get-AzVirtualHub -ResourceGroupName '<rg-vwan>' -Name '<vhub name>').AddressPrefix  #172.25.1.0/24
+
+<#The backend SNAT IPs are only discoverable using Kusto
+Its for autoscaling built in
+https://learn.microsoft.com/en-us/azure/firewall/firewall-performance#total-throughput-for-initial-firewall-deployment
+AzureDiagnostics
+| where ResourceType == "AZUREFIREWALLS"
+| where msg_s contains "172.25.1."
+| extend PrivateSNATIP = extract(@"172\.25\.1\.\d+",0,msg_s)
+| summarize dcount(PrivateSNATIP), ActiveIPs = make_set(PrivateSNATIP)
+
+
+
+dcount_PrivateSNATIP      ActiveIPs
+5                         ["<AzFirewall SNAT PrivateIP2>","<AzFirewall SNAT PrivateIP3>","<AzFirewall SNAT PrivateIP4>","<AzFirewall SNAT PrivateIP0>","<AzFirewall SNAT PrivateIP1>"]
+#>
+
+
+#endregion

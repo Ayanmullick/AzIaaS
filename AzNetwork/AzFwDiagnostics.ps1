@@ -191,3 +191,14 @@ $firewallPolicyName = "vhub-pr"
 $firewallPolicyName = 'vhub-prem-pol<>'
 $ipGroupName = '<ipgroup-webservers>'
 $firewallPolicy = Get-AzFirewallPolicy -ResourceGroupName $resourceGroupName -Name $firewallPolicyName
+
+
+
+#region Kusto query for AzFW rules hitting an AzVM
+AzureDiagnostics
+| where Category == "AzureFirewallNetworkRule"
+| where msg_s has "<SourceAzVmPrivateIp>" 
+| parse msg_s with "Deny " protocol " request from " sourceIP ":" sourcePort " to " destIP ":" destPort ". Rule*" 
+| project TimeGenerated, protocol, sourceIP, sourcePort, destIP, destPort, msg_s
+| order by TimeGenerated desc
+#endregion
