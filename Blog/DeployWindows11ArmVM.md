@@ -1,40 +1,40 @@
 # Azure PowerShell to deploy Win11 Arm VM
-<script>
-  fetch("https://raw.githubusercontent.com/ayanmullick/AzIaaS/master/AzVM.ps1").then(response => response.clone().text()).then(data => {
-    showBlocks(data,{code0:"Variables", code1: "NetworkConfiguration", code2: "VirtualMachineConfiguration", code3: "DeploysVM"});
-  })
-</script>
 
 I wanted to explore the benefits of [Azure ARM VMs that run on Arm-based processors][1]. They offer outstanding price-performance and power-efficiency for various workloads. In this snippet, I show how to deploy a [Generation 2][2] Windows 11 ARM virtual machine with basic [naming standard][11] and diagnostics using PowerShell cmdlets.
 
-<a href="https://shell.azure.com/powershell" target="_blank">
-   <img align="right" src="https://learn.microsoft.com/azure/cloud-shell/media/embed-cloud-shell/launch-cloud-shell-1.png" alt="Launch Cloud Shell">
-</a>
-<br><br>
-
+[Launch Azure Cloud Shell](https://shell.azure.com/powershell) · [View PowerShell source](../AzVM.ps1)
 
 <figure style="float:right; margin:0; max-width: 30%;">
-  <img src="https://ayanmullick.github.io/AzIaaS/Images/DeployWindows11ArmVM.png" width="100%" alt="Azure Portal screenshot for output resources"/>
+  <img src="../Images/DeployWindows11ArmVM.png" width="100%" alt="Azure Portal screenshot for output resources"/>
   <figcaption style="text-decoration: underline">Azure Portal screenshot for output resources</figcaption>
 </figure>
 
 This stores the name in a variable, creates a resource group and parameterizes the location and Resource Group name for [splatting][3].
 
 <details open>
-<summary><u id="Variables"></u></summary> <pre class="powershell" id="code0"></pre>
+<summary id="Variables">Variables</summary>
+
+<!-- code-include: {"path":"../AzVM.ps1","region":"Variables","language":"powershell"} -->
+
 </details>
 
 This is the network configuration to create an NSG allowing remote desktop connections and a public IP address pointing to the [accelerated networking][4] enabled network card that the virtual machine would use. Add the IP where the RDP connection would come from.
 <details>
-<summary><u id="NetworkConfiguration"></u></summary> <pre class="powershell" id="code1"></pre>
+<summary id="NetworkConfiguration">Network configuration</summary>
+
+<!-- code-include: {"path":"../AzVM.ps1","region":"NetworkConfiguration","language":"powershell"} -->
+
 </details>
 
 The virtual machine configuration specifies the name, [size][5], credentials, time zone, [image details][10], [update behavior][6] and [diagnostics configuration][7] of the VM. Add your password.
 <details open>
-<summary><u id="VirtualMachineConfiguration"></u></summary> <pre id="code2" class="powershell"></pre>
+<summary id="VirtualMachineConfiguration">Virtual machine configuration</summary>
+
+<!-- code-include: {"path":"../AzVM.ps1","region":"VirtualMachineConfiguration","language":"powershell"} -->
+
 </details>
 
-<pre id="code3" class="powershell"></pre>
+<!-- code-include: {"path":"../AzVM.ps1","region":"DeploysVM","language":"powershell"} -->
 
 **Output**
 
