@@ -2,7 +2,7 @@
 
 I wanted to explore the benefits of [Azure ARM VMs that run on Arm-based processors][1]. They offer outstanding price-performance and power-efficiency for various workloads. In this snippet, I show how to deploy a [Generation 2][2] Windows 11 ARM virtual machine with basic [naming standard][11] and diagnostics using PowerShell cmdlets.
 
-[Launch Azure Cloud Shell](https://shell.azure.com/powershell) · [View PowerShell source](../AzVM.ps1)
+[Launch Azure Cloud Shell](https://shell.azure.com/powershell) · [View PowerShell source](../AzVM/AzVM.ps1)
 
 <figure style="float:right; margin:0; max-width: 30%;">
   <img src="../Images/DeployWindows11ArmVM.png" width="100%" alt="Azure Portal screenshot for output resources"/>
@@ -14,7 +14,7 @@ This stores the name in a variable, creates a resource group and parameterizes t
 <details open>
 <summary id="Variables">Variables</summary>
 
-<!-- code-include: {"path":"../AzVM.ps1","region":"Variables","language":"powershell"} -->
+<!-- code-include: {"path":"../AzVM/AzVM.ps1","region":"Variables","language":"powershell"} -->
 
 </details>
 
@@ -22,7 +22,7 @@ This is the network configuration to create an NSG allowing remote desktop conne
 <details>
 <summary id="NetworkConfiguration">Network configuration</summary>
 
-<!-- code-include: {"path":"../AzVM.ps1","region":"NetworkConfiguration","language":"powershell"} -->
+<!-- code-include: {"path":"../AzVM/AzVM.ps1","region":"NetworkConfiguration","language":"powershell"} -->
 
 </details>
 
@@ -30,11 +30,11 @@ The virtual machine configuration specifies the name, [size][5], credentials, ti
 <details open>
 <summary id="VirtualMachineConfiguration">Virtual machine configuration</summary>
 
-<!-- code-include: {"path":"../AzVM.ps1","region":"VirtualMachineConfiguration","language":"powershell"} -->
+<!-- code-include: {"path":"../AzVM/AzVM.ps1","region":"VirtualMachineConfiguration","language":"powershell"} -->
 
 </details>
 
-<!-- code-include: {"path":"../AzVM.ps1","region":"DeploysVM","language":"powershell"} -->
+<!-- code-include: {"path":"../AzVM/AzVM.ps1","region":"DeploysVM","language":"powershell"} -->
 
 **Output**
 
