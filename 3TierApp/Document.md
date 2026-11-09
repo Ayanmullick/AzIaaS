@@ -50,36 +50,34 @@ These are the NSG rules to allow SSL and Windows Admin Center traffic.
 
 
 
-<script>
-  fetch("https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/GovResource.ps1").then(response => response.clone().text()).then(data => {
-    showBlocks(data,{ code0 : "GovernanceResources", code1 : "NetworkResources", code2 : "OutputForNextJob"});
-  });
-
-   fetch("https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/VMs.ps1").then(response => response.clone().text()).then(data => {
-    showBlocks(data,{ code3 : "VirtualMachineCreation"});
-  })
-</script>
-
-
 This prestages the governance resources in Azure for the VMs' Deployment job.
 
 
 <details>
-<summary><u id="GovernanceResources"></u></summary> <pre class="powershell" id="code0"></pre>
+<summary id="GovernanceResources">Governance resources</summary>
+
+<!-- code-include: {"path":"./GovResource.ps1","region":"GovernanceResources","language":"powershell"} -->
+
 </details>
 
 This prestages the Network resources in Azure for the VMs' Deployment job.
 
 
 <details>
-<summary><u id="NetworkResources"></u></summary> <pre class="powershell" id="code1"></pre>
+<summary id="NetworkResources">Network resources</summary>
+
+<!-- code-include: {"path":"./GovResource.ps1","region":"NetworkResources","language":"powershell"} -->
+
 </details>
 
 
 This passes the resources' details between the Governance resources and the VM deployment jobs in the GitHub Actions workflow.
 
 <details open>
-<summary><u id="OutputForNextJob"></u></summary> <pre class="powershell" id="code2"></pre>
+<summary id="OutputForNextJob">Output for next job</summary>
+
+<!-- code-include: {"path":"./GovResource.ps1","region":"OutputForNextJob","language":"powershell"} -->
+
 </details>
 
 
@@ -89,8 +87,11 @@ Here is a link to the [Governance resources deployment execution][2]
 This deploys the required virtual machines in the same resource group using the previously prestaged governance resources.
 
 
-<details close>
-<summary><u id="VirtualMachineCreation"></u></summary> <pre class="powershell" id="code3"></pre>
+<details>
+<summary id="VirtualMachineCreation">Virtual machine creation</summary>
+
+<!-- code-include: {"path":"./VMs.ps1","region":"VirtualMachineCreation","language":"powershell"} -->
+
 </details>
 
 
