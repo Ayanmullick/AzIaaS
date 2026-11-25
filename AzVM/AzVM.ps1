@@ -35,11 +35,16 @@ $AttestationParams   = @{VMName=$VMConfig.Name; Name='GuestAttestation'; Publish
     ExtensionType='GuestAttestation'; TypeHandlerVersion='1.0'; EnableAutomaticUpgrade=$true; Settings=$AttestationSettings}
 Set-AzVMExtension @Params @AttestationParams
 
-$VM                  = Get-AzVM @Scope -Name $VMConfig.Name
-$VM.SecurityProfile | Select-Object SecurityType
-$VM.SecurityProfile.UefiSettings | Select-Object SecureBootEnabled,VTpmEnabled
-Get-AzVM @Scope -Name $VMConfig.Name -Status | Select-Object Name,OsName,OsVersion,Statuses
-Get-AzVMExtension @Scope -VMName $VMConfig.Name -Name $AttestationParams.Name | Select-Object Name,ProvisioningState
+$VM          = Get-AzVM @Scope -Name $VMConfig.Name
+$Instance    = Get-AzVM @Scope -Name $VMConfig.Name -Status
+$Attestation = Get-AzVMExtension @Scope -VMName $VMConfig.Name -Name $AttestationParams.Name
+$Uefi        = $VM.SecurityProfile.UefiSettings
+
+[pscustomobject]@{
+    Name=$VM.Name; OsName=$Instance.OsName; OsVersion=$Instance.OsVersion
+    SecurityType=$VM.SecurityProfile.SecurityType; SecureBootEnabled=$Uefi.SecureBootEnabled; VTpmEnabled=$Uefi.VTpmEnabled
+    VMStatus=($Instance.Statuses.DisplayStatus -join ', '); GuestAttestation=$Attestation.ProvisioningState
+} | Format-List
 #endregion
 
 #endregion

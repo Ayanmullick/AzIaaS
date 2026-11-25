@@ -38,17 +38,20 @@ The VM uses [`Standard_E4ps_v7`][5], a Standard SSD OS disk, and the `latest` ve
 
 ## Deploy and verify
 
-`New-AzVM` uses `-IfNoneMatch '*'` to prevent that request from updating an existing VM. The script then installs the [Guest Attestation extension][13] for boot integrity monitoring and displays the VM's security settings, OS status, and extension provisioning state.
+`New-AzVM` uses `-IfNoneMatch '*'` to prevent that request from updating an existing VM. The script then installs the [Guest Attestation extension][13] for boot integrity monitoring. The final list puts the guest OS, security settings, VM status messages, and extension provisioning state in one block you can copy.
 
 <!-- code-include: {"path":"../AzVM/AzVM.ps1","region":"DeployAndVerifyVM","language":"powershell"} -->
 
 <details>
-<summary>Output from the earlier deployment</summary>
+<summary>Recorded verification values</summary>
 
 ```text
-RequestId IsSuccessStatusCode StatusCode ReasonPhrase
---------- ------------------- ---------- ------------
-                         True         OK OK
+Name              : Win11ArmVM
+OsName            : Windows 11 Enterprise
+OsVersion         : 10.0.26300.9974
+SecureBootEnabled : True
+VTpmEnabled       : True
+GuestAttestation  : Succeeded
 ```
 
 </details>
