@@ -58,8 +58,6 @@ VTpmEnabled       : True
 GuestAttestation  : Succeeded
 ```
 
-[Azure portal screenshot from an earlier deployment](../Images/DeployWindows11ArmVM.png)
-
 </details>
 
 [1]:  <https://learn.microsoft.com/en-us/azure/virtual-machines/sizes/cobalt-overview>
