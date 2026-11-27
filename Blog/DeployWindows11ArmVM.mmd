@@ -1,0 +1,65 @@
+---
+title: Windows 11 Arm VM in Central US
+config:
+  flowchart:
+    rankSpacing: 32
+    nodeSpacing: 24
+    diagramPadding: 8
+  themeCSS: >-
+    .icon-shape .labelBkg, .icon-shape p,
+    .image-shape .labelBkg, .image-shape p,
+    .edgeLabels .edgeLabel, .edgeLabels .labelBkg, .edgeLabels .edgeLabel p {
+        background: transparent !important;
+    }
+---
+flowchart LR
+    classDef ResourceGroupBoundary fill:none,stroke:deepskyblue,stroke-width:3px,stroke-dasharray:6 4,color:deepskyblue,filter:none
+    classDef VirtualNetworkBoundary fill:none,stroke:steelblue,stroke-width:2px,stroke-dasharray:8 4,color:steelblue,filter:none
+    classDef SubnetBoundary fill:none,stroke:slategray,stroke-width:2px,stroke-dasharray:3 3,color:slategray,filter:none
+    classDef LayoutContainer fill:none,stroke:none,stroke-width:0px,filter:none
+    subgraph canvas [" "]
+        direction TB
+        subgraph mainRow [" "]
+            direction LR
+            rdpClient@{ icon: "azure:users", label: "Allowed RDP client", pos: "b", h: 72 }
+            subgraph resourceGroup ["Resource group: Win11ArmRG"]
+                direction LR
+                publicIp@{ icon: "azure:public-ip-addresses", label: "Win11ArmPIP (public IP)", pos: "b", h: 72 }
+                vm@{ icon: "azure:virtual-machine", label: "Win11ArmVM (E4ps_v7)", pos: "b", h: 72 }
+                nsg@{ icon: "azure:network-security-groups", label: "Win11ArmNSG", pos: "b", h: 72 }
+                osDisk@{ icon: "azure:disks", label: "Win11ArmOS (Standard SSD)", pos: "b", h: 72 }
+                attestation@{ icon: "azure:extensions", label: "GuestAttestation", pos: "b", h: 72 }
+                subgraph virtualNetwork ["Win11ArmVN (192.168.0.0/28)"]
+                    direction LR
+                    subgraph subnet ["Default subnet (192.168.0.0/29)"]
+                        direction LR
+                        networkInterface@{ icon: "azure:network-interfaces", label: "Win11ArmNIC", pos: "b", h: 72 }
+                    end
+                end
+                publicIp --> networkInterface
+                networkInterface --> vm
+                nsg -.->|Applied to subnet| subnet
+                vm -.->|OS disk| osDisk
+                vm -.->|VM extension| attestation
+            end
+            rdpClient -->|RDP TCP 3389| publicIp
+        end
+        subgraph footer [" "]
+            direction LR
+            legendSpacer@{ shape: text, label: "<div style='height:1px;width:870px'></div>" }
+            boundaryLegend@{
+                shape: text
+                label: "<div style='text-align:left;white-space:nowrap;font-family:Segoe UI,Arial,sans-serif;font-size:11px;line-height:16px'><span style='color:deepskyblue'>╌ ╌ Resource group</span>
+                    <span style='color:steelblue'>╌ ╌ Virtual network</span>
+                    <span style='color:slategray'>╌ ╌ Subnet</span></div>"
+            }
+            boundaryLegend ~~~ legendSpacer
+        end
+        mainRow ~~~ footer
+    end
+    class subnet SubnetBoundary
+    class virtualNetwork VirtualNetworkBoundary
+    class resourceGroup ResourceGroupBoundary
+    class mainRow LayoutContainer
+    class footer LayoutContainer
+    class canvas LayoutContainer

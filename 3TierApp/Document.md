@@ -129,6 +129,6 @@ https://biosistemika.com/blog/dont-save-on-quality-key-attributes-of-software
 </details>
 
 [1]: <https://learn.microsoft.com/en-us/azure/architecture/guide/architecture-styles/#n-tier>
-[2]: <https://ayanmullick.github.io/AzIaaS/Render/LogRender.html?path=https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/AzPSImageInfraDeploymentWithApproval%20GovernanceResourcesJob.log>
-[3]: <https://ayanmullick.github.io/AzIaaS/Render/LogRender.html?path=https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/AzPSImageInfraDeploymentWithApproval%20DeployVirtualMachines.log>
+[2]: <https://ayan.mullick.in/FieldNotes/?view=log&path=https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/AzPSImageInfraDeploymentWithApproval%20GovernanceResourcesJob.log>
+[3]: <https://ayan.mullick.in/FieldNotes/?view=log&path=https://raw.githubusercontent.com/Ayanmullick/AzIaaS/refs/heads/main/3TierApp/AzPSImageInfraDeploymentWithApproval%20DeployVirtualMachines.log>
 [4]: <https://github.com/actions/checkout/issues/1602#issuecomment-2048656906>

@@ -4,10 +4,14 @@ I wanted to explore [Azure Cobalt VMs][1]. This example uses Azure PowerShell to
 
 [Read in FieldNotes][12] · [Launch Azure Cloud Shell](https://shell.azure.com/powershell) · [View PowerShell source](../AzVM/AzVM.ps1)
 
-<figure style="float:right; margin:0; max-width: 30%;">
-  <img src="../Images/DeployWindows11ArmVM.png" width="100%" alt="Azure portal resources from an earlier deployment"/>
-  <figcaption style="text-decoration: underline">Azure portal resources from an earlier deployment</figcaption>
-</figure>
+<details>
+<summary>Deployment architecture</summary>
+
+[View Mermaid source](./DeployWindows11ArmVM.mmd)
+
+<!-- code-include: {"path":"./DeployWindows11ArmVM.mmd","language":"mermaid"} -->
+
+</details>
 
 Sign in to the intended Azure subscription and create `Win11ArmRG` before running the example. The script uses `Win11Arm` as the name prefix and `centralus` for the resources. `$Scope` holds the resource group name, and `$Params` adds the location for cmdlets that need it. Both are reused through [splatting][3]. Run this example with resource names that are available in the target group.
 
@@ -53,6 +57,8 @@ SecureBootEnabled : True
 VTpmEnabled       : True
 GuestAttestation  : Succeeded
 ```
+
+[Azure portal screenshot from an earlier deployment](../Images/DeployWindows11ArmVM.png)
 
 </details>
 
