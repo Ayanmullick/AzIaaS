@@ -46,14 +46,7 @@ flowchart LR
         end
         subgraph footer [" "]
             direction LR
-            legendSpacer@{ shape: text, label: "<div style='height:1px;width:870px'></div>" }
-            boundaryLegend@{
-                shape: text
-                label: "<div style='text-align:left;white-space:nowrap;font-family:Segoe UI,Arial,sans-serif;font-size:11px;line-height:16px'><span style='color:deepskyblue'>╌ ╌ Resource group</span>
-                    <span style='color:steelblue'>╌ ╌ Virtual network</span>
-                    <span style='color:slategray'>╌ ╌ Subnet</span></div>"
-            }
-            boundaryLegend ~~~ legendSpacer
+            boundaryLegend@{ shape: text, label: "RG (cyan) · VNet (blue) · Subnet (gray)" }
         end
         mainRow ~~~ footer
     end
